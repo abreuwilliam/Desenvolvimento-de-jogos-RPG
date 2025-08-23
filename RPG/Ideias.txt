@@ -1,0 +1,37 @@
+vila 
+castelo do rei 
+Ansiao
+Bar
+Loja de Armas
+
+floresta 
+personagem para farma: Lobo, Onça, Planta carnivora, Urso, Ladrao de Tesouros
+Missao Carvena
+
+Pantano
+Personagem para farma: Piton, Jacare
+Missao Espada Magica
+
+Mar Negro
+Personagem para farma: crocodilo, Megaladon, Orca, Piratas
+Missao Tesouro dos Piratas
+
+Deserto:
+Personagem para farma: Escorpiao Rei, Lobo do deserto,caçador de Tesouros
+Missao Final Castelo do Dragon
+
+Lista de Personagens
+Lobo
+Onça
+Planta carnivora
+Urso
+Ladrao de Tesouros
+Piton
+Jacare
+Crocodilo
+Megaladon
+Orca
+Piratas
+Escorpiao Rei
+Lobo do deserto
+Caçador de tesouros
