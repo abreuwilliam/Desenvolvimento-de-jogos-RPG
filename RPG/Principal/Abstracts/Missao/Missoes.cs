@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading;
-using RpgTerminal.Principal;
+using Rpg.Principal.Abstracts;
 
 namespace RpgTerminal.Principal.Missoes
 {
