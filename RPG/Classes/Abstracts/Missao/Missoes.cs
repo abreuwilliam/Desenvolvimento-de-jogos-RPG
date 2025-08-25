@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Threading;
-using Rpg.Principal.Abstracts;
+using Rpg.Classes.Abstracts;
 
-namespace RpgTerminal.Principal.Missoes
+namespace RpgTerminal.Classes.Missoes
 {
     public abstract class MissaoBase
     {
-        // Propriedades básicas da missão
         public string Id { get; protected set; }
         public string Titulo { get; protected set; }
         public string Descricao { get; protected set; }
