@@ -27,13 +27,13 @@ namespace Rpg.Principal.Abstracts
             InicializarAtributos();
         }
 
-       
+
         private void InicializarAtributos()
         {
             VidaMaxima = 100 + (Nivel * 10);
             Vida = VidaMaxima;
-            Ataque = 15 + (Nivel * 2);
-            Defesa = 5 + Nivel;
+            Ataque = Ataque + 15 + (Nivel * 2);
+            Defesa = Defesa + 5 + Nivel;
         }
 
         // Método para receber dano
@@ -41,20 +41,20 @@ namespace Rpg.Principal.Abstracts
         {
             int danoReal = Math.Max(dano - Defesa, 1);
             Vida = Math.Max(Vida - danoReal, 0);
-            
+
             Console.WriteLine($"💥 {Nome} recebeu {danoReal} de dano!");
-            
+
             if (!EstaVivo)
             {
                 Console.WriteLine($"💀 {Nome} foi derrotado!");
             }
         }
-        
+
         public virtual void ConcederRecompensa(Personagem agressor)
         {
-    
+
             int expGanho = Nivel * 10;
-            int ouroGanho = Nivel * 5;
+            int ouroGanho = Nivel * 50;
 
             agressor.AdicionarExperiencia(expGanho);
             agressor.AdicionarOuro(ouroGanho);
@@ -76,29 +76,29 @@ namespace Rpg.Principal.Abstracts
         {
             Experiencia += exp;
             Console.WriteLine($"⭐ {Nome} ganhou {exp} pontos de experiência!");
-            
+
             VerificarSubidaNivel();
         }
 
-             private void VerificarSubidaNivel()
+        private void VerificarSubidaNivel()
         {
-            int expNecessaria = Nivel * 100;
-            
+            int expNecessaria = Nivel * 10;
+
             if (Experiencia >= expNecessaria)
             {
                 SubirNivel();
             }
         }
 
-    
+
         public void SubirNivel()
         {
             Nivel++;
             int vidaAntes = VidaMaxima;
-            
+
             InicializarAtributos(); // Recalcula atributos com novo nível
             Vida = VidaMaxima; // Cura completamente
-            
+
             Console.WriteLine($"\n🎉 {Nome} subiu para o nível {Nivel}!");
             Console.WriteLine($"📊 Vida: {vidaAntes} → {VidaMaxima}");
             Console.WriteLine($"⚔️ Ataque: {Ataque - 2} → {Ataque}");
@@ -187,5 +187,16 @@ namespace Rpg.Principal.Abstracts
                 Console.WriteLine($"❌ {Nome} já está vivo!");
             }
         }
+
+        public int getNivel()
+        {
+            return Nivel;
+        }
+        public void setVida(int vida)
+        {
+            Vida = vida;
+        }
+    
     }
+    
 }
