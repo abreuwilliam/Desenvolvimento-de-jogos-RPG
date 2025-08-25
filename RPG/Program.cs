@@ -1,7 +1,7 @@
 ﻿using Rpg.Principal.Abstracts;
 using Rpg.Principal.Personagens;
 using Rpg.Principal;
-// See https://aka.ms/new-console-template for more information
+
 Console.WriteLine("Hello, World!");
 Personagem heroi = new Personagem("Herói", nivel: 2, ataque: 150, defesa: 50);
 Personagem lobo = new Lobo("Lobo");
