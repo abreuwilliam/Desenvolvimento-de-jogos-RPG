@@ -2,7 +2,7 @@ using Rpg.Classes.Abstracts;
 
 namespace Rpg.Classes.Personagens 
 {
-    public class Lobo da Floresta : Personagem
+    public class Lobo  : Personagem
     {
      
         public Lobo(string nome = "Lobo")

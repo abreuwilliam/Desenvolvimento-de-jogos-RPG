@@ -4,7 +4,7 @@ using Rpg.Classes;
 
 Console.WriteLine("Hello, World!");
 Personagem Protagonista = new Personagem("Herói", nivel: 2, ataque: 150, defesa: 50);
-Personagem Lobo da Floresta = new Lobo da Floresta();
+Lobo lobo = new Lobo();
 Combate combate = new Combate(Protagonista, lobo);
 
     Protagonista.MostrarStatus();
