@@ -27,7 +27,6 @@ namespace Rpg.Principal.Abstracts
             InicializarAtributos();
         }
 
-       
         private void InicializarAtributos()
         {
             VidaMaxima = 100 + (Nivel * 10);
@@ -52,7 +51,6 @@ namespace Rpg.Principal.Abstracts
         
         public virtual void ConcederRecompensa(Personagem agressor)
         {
-    
             int expGanho = Nivel * 10;
             int ouroGanho = Nivel * 5;
 
@@ -80,7 +78,7 @@ namespace Rpg.Principal.Abstracts
             VerificarSubidaNivel();
         }
 
-             private void VerificarSubidaNivel()
+        private void VerificarSubidaNivel()
         {
             int expNecessaria = Nivel * 100;
             
@@ -90,7 +88,6 @@ namespace Rpg.Principal.Abstracts
             }
         }
 
-    
         public void SubirNivel()
         {
             Nivel++;
