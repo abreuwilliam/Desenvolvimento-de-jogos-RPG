@@ -1,7 +1,6 @@
-﻿using System;
+﻿﻿using System;
 using System.Threading;
 using Rpg.Principal.Abstracts;
-
 using Rpg.Principal.Personagens;
 
 Console.WriteLine("💥 Batalha: Herói vs Vilão");
