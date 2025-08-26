@@ -1,31 +1,24 @@
-using Rpg.Principal.Abstracts; // AQUI! Adicione esta linha para referenciar a classe Personagem
+using System;
+using Rpg.Principal.Abstracts;
 
-namespace Rpg.Principal.Personagens // Exemplo de namespace para a classe Lobo
+namespace Rpg.Principal.Personagens
 {
     public class Lobo : Personagem
     {
-        // Construtor da classe Lobo. 
-        // Ele chama o construtor da classe base (Personagem) com os valores iniciais.
         public Lobo(string nome)
-            : base(nome, nivel: 2, ataque: 20, defesa: 10)
+            : base(nome, 2, 20, 10)
         {
         }
 
-
-        public void Recompensa()
-        {
-            Console.WriteLine("🐺 O Lobo uiva para a lua!");
-        }
         public override void ConcederRecompensa(Personagem agressor)
         {
-            int expGanho = 50; // Experiência fixa por derrotar o lobo
-            int ouroGanho = 20; // Ouro fixo por derrotar o lobo
+            int expGanho = 50;
+            int ouroGanho = 20;
 
             agressor.AdicionarExperiencia(expGanho);
             agressor.AdicionarOuro(ouroGanho);
 
-            Console.WriteLine($"🏆 {agressor.Nome} ganhou {expGanho} de experiência e {ouroGanho} de ouro por derrotar o Lobo!");
+            Console.WriteLine($"{agressor.Nome} ganhou {expGanho} de experiência e {ouroGanho} de ouro por derrotar o Lobo!");
         }
-
     }
 }
