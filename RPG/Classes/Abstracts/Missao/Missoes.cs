@@ -41,13 +41,10 @@ namespace RpgTerminal.Classes.Missoes
 
             EstaAtiva = true;
 
-            // 1. Contar a história
             ContarHistoria();
 
-            // 2. Executar objetivos específicos
             ExecutarObjetivos(jogador);
 
-            // 3. Verificar conclusão
             if (VerificarConclusao())
             {
                 CompletarMissao(jogador);
@@ -60,23 +57,18 @@ namespace RpgTerminal.Classes.Missoes
             Console.WriteLine(new string('=', 50));
         }
 
-        // Método para contar a história (pode ser sobrescrito)
         protected virtual void ContarHistoria()
         {
             Console.WriteLine($"\n📖 LOCAL: {Local}");
             Console.WriteLine($"📝 {Descricao}");
 
-            // Efeito de digitação para a história
             DigitarTexto($"\n💬 Narrador: ", 50);
         }
 
-        // Método abstrato para objetivos específicos
         protected abstract void ExecutarObjetivos(Personagem jogador);
 
-        // Método abstrato para verificar conclusão
         protected abstract bool VerificarConclusao();
 
-        // Método para completar a missão e dar recompensa
         protected virtual void CompletarMissao(Personagem jogador)
         {
             EstaCompleta = true;
@@ -84,7 +76,6 @@ namespace RpgTerminal.Classes.Missoes
 
             Console.WriteLine($"\n🎉 MISSÃO CONCLUÍDA: {Titulo}");
 
-            // Dar recompensas
             jogador.AdicionarExperiencia(ExperienciaRecompensa);
             jogador.AdicionarOuro(OuroRecompensa);
 
@@ -92,17 +83,14 @@ namespace RpgTerminal.Classes.Missoes
             Console.WriteLine($"⭐ +{ExperienciaRecompensa} EXP");
             Console.WriteLine($"💰 +{OuroRecompensa} Ouro");
 
-            // Recompensa adicional específica
             DarRecompensaExtra(jogador);
         }
 
-        // Método para recompensa extra (pode ser sobrescrito)
         protected virtual void DarRecompensaExtra(Personagem jogador)
         {
             
         }
 
-        // Método utilitário para efeito de digitação
         protected void DigitarTexto(string texto, int velocidadeMs = 30)
         {
             foreach (char c in texto)
