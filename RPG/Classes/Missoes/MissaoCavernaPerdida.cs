@@ -21,7 +21,7 @@ namespace Rpg.Classes.Missoes;
     public override void IniciarMissao(Personagem jogador)
     {
         DigitarTexto("💬 Narrador: Chegando à entrada da caverna, um calafrio percorre sua espinha. O ar denso e úmido carrega o cheiro de pedra e algo... podre. Você decide entrar.", 40);
-        Thread.Sleep(3000); 
+        Thread.Sleep(5000); 
         ExecutarObjetivos(jogador);
         if (VerificarConclusao() == true)
         {
@@ -47,7 +47,11 @@ protected override void ExecutarObjetivos(Personagem jogador)
 
         Console.Write("\nDigite sua escolha (1, 2 ou 0): ");
         string escolha = Console.ReadLine();
-
+        if(jogador.Nivel < 10)
+        {
+            DigitarTexto("\n⚠️ Você não tem nível suficiente para enfrentar o ogro. Volte quando estiver mais forte.", 40);
+            return; 
+        }
         if (escolha == "1")
         {
             DigitarTexto("\nVocê se esgueira pela câmara escura. Em um canto, você encontra um monte de ossos e um cheiro forte. Você se arrepia, mas não encontra nada de valor. Você volta para a entrada da caverna, mas o baú de tesouro ainda está lá, esperando por você.", 40);
@@ -57,7 +61,7 @@ protected override void ExecutarObjetivos(Personagem jogador)
         {
             DigitarTexto("\nVocê segue as pegadas gigantes, que levam a uma câmara maior. No centro, um enorme Ogro dorme profundamente, guardando um baú de tesouro cintilante.", 40);
 
-            LoboSombrio ogro = new LoboSombrio();
+            OgroCaverna ogro = new OgroCaverna();
 
             Console.WriteLine($"\n\n⚔️ ENCONTRO COM {ogro.Nome.ToUpper()} ⚔️");
 
@@ -72,7 +76,7 @@ protected override void ExecutarObjetivos(Personagem jogador)
             else
             {
                 DigitarTexto($"\n💀 Você foi derrotado pelo {ogro.Nome}. A missão falhou.", 40);
-                // A linha 'return;' já garante que a missão termine.
+                
                 return;
             }
         }

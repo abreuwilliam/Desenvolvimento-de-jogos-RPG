@@ -23,7 +23,7 @@ Console.WriteLine("🏆 Aventura encerrada!");
 Console.ReadLine();
 */
 
-Heroi heroi = new Heroi("Arthur", 1, 15, 50);
+Heroi heroi = new Heroi("Arthur", 1, 150, 50);
 heroi.MostrarStatus();
 MissaoCavernaPerdida missao = new MissaoCavernaPerdida(heroi);
 missao.IniciarMissao(heroi);
