@@ -1,7 +1,6 @@
 using System;
 using Rpg.Classes.Abstracts;  // Importa a classe Personagem
-
-namespace Rpg.Principal.Personagens
+namespace Rpg.Classes.Personagens 
 {
     public class Heroi : Personagem
     {
