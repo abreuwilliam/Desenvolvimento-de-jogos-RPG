@@ -2,7 +2,7 @@
 using System.Threading;
 using Rpg.Classes.Abstracts;
 
-namespace RpgTerminal.Classes.Missoes
+namespace Rpg.Classes.Missoes
 {
     public abstract class MissaoBase
     {
@@ -15,7 +15,9 @@ namespace RpgTerminal.Classes.Missoes
         public int ExperienciaRecompensa { get; protected set; }
         public int OuroRecompensa { get; protected set; }
 
-        protected MissaoBase(string titulo, string local, int expRecompensa, int ouroRecompensa)
+        public Personagem Jogador { get; protected set; }
+
+        protected MissaoBase(string titulo, string local, int expRecompensa, int ouroRecompensa, Personagem jogador)
         {
             Id = Guid.NewGuid().ToString();
             Titulo = titulo;
@@ -24,6 +26,7 @@ namespace RpgTerminal.Classes.Missoes
             OuroRecompensa = ouroRecompensa;
             EstaCompleta = false;
             EstaAtiva = false;
+            this.Jogador = jogador;
         }
 
         public abstract void IniciarMissao(Personagem jogador);

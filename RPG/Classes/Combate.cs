@@ -14,6 +14,7 @@ public class Combate
 
     public void Iniciar()
     {
+         Thread.Sleep(2000);
         while (Protagonista.EstaVivo && vilao.EstaVivo)
         {
             Protagonista.AtacarAlvo(vilao);
@@ -25,7 +26,7 @@ public class Combate
             {
                 vilao.ConcederRecompensa(Protagonista);
             }
-            Thread.Sleep(3000); 
+            Thread.Sleep(3000);
         }
     }
 }
