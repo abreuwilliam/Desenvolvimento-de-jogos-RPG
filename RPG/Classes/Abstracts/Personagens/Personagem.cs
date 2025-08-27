@@ -6,11 +6,11 @@ namespace Rpg.Classes.Abstracts
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public string? Nome { get; private set; }
-        public int Nivel { get; private set; }
+        public int Nivel { get; set; }
         public int Vida { get; private set; }
         public int VidaMaxima { get; private set; }
         public int Ataque { get; private set; }
-        public int Defesa { get; private set; }
+        public int Defesa { get; set; }
         public int Experiencia { get; private set; }
         public int Ouro { get; private set; }
         public bool EstaVivo => Vida > 0;
