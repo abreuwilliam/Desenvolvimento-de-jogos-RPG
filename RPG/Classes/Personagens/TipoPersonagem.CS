@@ -25,7 +25,8 @@ namespace Rpg.Classes.Personagens
         PlantaDevoraAlmas,
         PovoKraken,
         UrsoNegro,
-        ZumbiDoPantano
+        ZumbiDoPantano,
+        Guerreiro
     }
 
     public static class PersonagemFactory

@@ -28,3 +28,6 @@ heroi.MostrarStatus();
 MissaoCavernaPerdida missao = new MissaoCavernaPerdida(heroi);
 missao.IniciarMissao(heroi);
 heroi.MostrarStatus();
+
+TipoPersonagem tipo = TipoPersonagem.Heroi;
+Console.WriteLine($"Tipo de Personagem: {tipo}");
