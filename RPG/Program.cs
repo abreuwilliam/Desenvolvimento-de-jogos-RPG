@@ -22,12 +22,12 @@ heroi.MostrarStatus();
 Console.WriteLine("🏆 Aventura encerrada!");
 Console.ReadLine();
 */
-
-Heroi heroi = new Heroi("Arthur", 1, 150, 50);
+TipoPersonagem tipo = TipoPersonagem.Heroi;
+Personagem heroi = PersonagemFactory.Criar(tipo);
 heroi.MostrarStatus();
-MissaoCavernaPerdida missao = new MissaoCavernaPerdida(heroi);
+MissaoFlorestaSombria missao = new MissaoFlorestaSombria(heroi);
 missao.IniciarMissao(heroi);
 heroi.MostrarStatus();
 
-TipoPersonagem tipo = TipoPersonagem.Heroi;
 Console.WriteLine($"Tipo de Personagem: {tipo}");
+
