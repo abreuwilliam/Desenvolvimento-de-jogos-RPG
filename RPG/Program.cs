@@ -3,6 +3,39 @@ using System.Threading;
 using Rpg.Classes.Abstracts;
 using Rpg.Classes.Personagens;
 using Rpg.Classes.Missoes;
+using Rpg.UI;
+using System.Security.Claims;
+using System.IO;
+using System.Text;
+Console.OutputEncoding = Encoding.UTF8;
+
+// chama o menu
+MenuResult resultadoMenu = MainMenu.Show();
+
+// se o jogador não confirmou, sai do jogo
+if (!resultadoMenu.Confirmado)
+{
+    Console.WriteLine("👋 Saindo do jogo. Até a próxima!");
+    return;
+}
+
+// pega os dados do menu
+string nome = resultadoMenu.Nome;
+string dificuldade = resultadoMenu.Dificuldade.ToString(); // se quiser usar em logs
+
+Console.Clear();
+
+Personagem Protagonista = new Personagem(nome, nivel: 10, ataque: 30, defesa: 50);
+Protagonista.Ouro = 3200; 
+
+Personagem lobo = PersonagemFactory.Criar(TipoPersonagem.LoboSombrio);
+
+//Combate combate = new Combate(Protagonista, lobo);
+//combate.Iniciar();
+
+MissaoBase missao = new MissaoCavernaPerdida(Protagonista);
+missao.ExecutarMissao(Protagonista);
+
 /*
 Console.WriteLine("Hello, World!");
 Personagem Protagonista = new Personagem("Herói", nivel: 2, ataque: 150, defesa: 50);
@@ -22,12 +55,7 @@ heroi.MostrarStatus();
 Console.WriteLine("🏆 Aventura encerrada!");
 Console.ReadLine();
 */
-TipoPersonagem tipo = TipoPersonagem.Heroi;
-Personagem heroi = PersonagemFactory.Criar(tipo);
-heroi.MostrarStatus();
-MissaoFlorestaSombria missao = new MissaoFlorestaSombria(heroi);
-missao.IniciarMissao(heroi);
-heroi.MostrarStatus();
 
-Console.WriteLine($"Tipo de Personagem: {tipo}");
 
+
+    

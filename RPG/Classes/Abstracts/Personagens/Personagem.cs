@@ -5,14 +5,14 @@ namespace Rpg.Classes.Abstracts
     public class Personagem
     {
         public Guid Id { get; set; } = Guid.NewGuid();
-        public string? Nome { get; private set; }
+        public string? Nome { get; set; }
         public int Nivel { get; set; }
         public int Vida { get; private set; }
         public int VidaMaxima { get; private set; }
         public int Ataque { get; private set; }
         public int Defesa { get; set; }
         public int Experiencia { get; private set; }
-        public int Ouro { get; private set; }
+        public int Ouro { get; set; }
         public bool EstaVivo => Vida > 0;
 
         public Personagem(string nome, int nivel, int ataque, int defesa)
@@ -36,7 +36,7 @@ namespace Rpg.Classes.Abstracts
 
         public void ReceberDano(int dano)
         {
-            int danoReal = Math.Max(dano - Defesa, 1);
+            int danoReal = Math.Max(dano - Defesa, 10);
             Vida = Math.Max(Vida - danoReal, 0);
 
             Console.WriteLine($"💥 {Nome} recebeu {danoReal} de dano!");
@@ -55,7 +55,8 @@ namespace Rpg.Classes.Abstracts
 
             agressor.AdicionarExperiencia(expGanho);
             agressor.AdicionarOuro(ouroGanho);
-            Console.WriteLine($"🎉 {agressor.Nome} derrotou {Nome} e ganhou {expGanho} de EXP e {ouroGanho} de ouro!");
+            Console.WriteLine($"🎉 {agressor.Nome} derrotou {Nome}");
+             Console.WriteLine($"e ganhou {expGanho} de EXP e {ouroGanho} de ouro!");
         }
 
         public void Curar(int quantidade)
@@ -70,7 +71,7 @@ namespace Rpg.Classes.Abstracts
         public void AdicionarExperiencia(int exp)
         {
             Experiencia += exp;
-            Console.WriteLine($"⭐ {Nome} ganhou {exp} pontos de experiência!");
+            Console.WriteLine($"⭐{Nome} ganhou {exp} de experiência!");
 
             VerificarSubidaNivel();
         }
@@ -168,8 +169,7 @@ namespace Rpg.Classes.Abstracts
         {
             if (!EstaVivo)
             {
-                Vida = VidaMaxima / 2; 
-                Console.WriteLine($"✨ {Nome} foi revivido com {Vida} de vida!");
+                Vida = VidaMaxima / 2;
             }
             else
             {
