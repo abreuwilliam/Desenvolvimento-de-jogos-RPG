@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "BB9XjEqjkgU=",
+  "dgSpecHash": "Hi9sj2ituA4=",
   "success": true,
-  "projectFilePath": "C:\\Users\\William Abreu\\Desktop\\RPG2\\Desenvolvimento-de-jogos-RPG\\RPG\\RPG.csproj",
+  "projectFilePath": "C:\\Users\\William Abreu\\Desktop\\Rpg\\Desenvolvimento-de-jogos-RPG\\RPG\\RPG.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\William Abreu\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.0\\microsoft.netcore.platforms.3.1.0.nupkg.sha512",
     "C:\\Users\\William Abreu\\.nuget\\packages\\microsoft.win32.registry\\4.7.0\\microsoft.win32.registry.4.7.0.nupkg.sha512",

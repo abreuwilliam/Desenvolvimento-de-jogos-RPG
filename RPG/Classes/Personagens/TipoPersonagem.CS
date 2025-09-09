@@ -27,7 +27,8 @@ namespace Rpg.Classes.Personagens
         UrsoNegro,
         ZumbiDoPantano,
         Guerreiro,
-        AranhaGigante
+        AranhaGigante,
+        BruxaDoPantano
     }
 
     public static class PersonagemFactory
@@ -58,6 +59,7 @@ namespace Rpg.Classes.Personagens
                 TipoPersonagem.UrsoNegro => new Personagem(nomePersonalizado ?? "Urso Negro", 6, 80, 150),
                 TipoPersonagem.ZumbiDoPantano => new Personagem(nomePersonalizado ?? "Zumbi do Pântano", 24, 250, 390),
                 TipoPersonagem.AranhaGigante => new Personagem(nomePersonalizado ?? "Aranha Gigante",20,180,400),
+                TipoPersonagem.BruxaDoPantano => new Personagem(nomePersonalizado ?? "Bruxa do Pântano", 50, 500, 800),
                 _ => throw new ArgumentOutOfRangeException(nameof(tipo), tipo, null)
             };
         }
