@@ -1,4 +1,4 @@
-/*using System;
+using System;
 using Rpg.Classes.Abstracts;
 using Rpg.Classes.Personagens;
 
@@ -149,4 +149,3 @@ namespace Rpg.Classes.Missoes
         }
     }
 }
-*/

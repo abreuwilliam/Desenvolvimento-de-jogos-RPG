@@ -174,12 +174,14 @@ PainelResultadoFim();
         Console.OutputEncoding = System.Text.Encoding.UTF8;
         Console.CursorVisible = false;
         // garante espaço razoável
-        try
-        {
-            if (Console.WindowWidth < 100) Console.SetWindowSize(Math.Max(100, Console.WindowWidth), Console.WindowHeight);
-            if (Console.WindowHeight < 35) Console.SetWindowSize(Console.WindowWidth, Math.Max(35, Console.WindowHeight));
-        }
-        catch { /* alguns terminais não permitem redimensionar */}
+                try
+                {
+        #if WINDOWS
+                    if (Console.WindowWidth < 100) Console.SetWindowSize(Math.Max(100, Console.WindowWidth), Console.WindowHeight);
+                    if (Console.WindowHeight < 35) Console.SetWindowSize(Console.WindowWidth, Math.Max(35, Console.WindowHeight));
+        #endif
+                }
+                catch { /* alguns terminais não permitem redimensionar */}
     }
 
     private static void DesenharCampo(out int left, out int top)
