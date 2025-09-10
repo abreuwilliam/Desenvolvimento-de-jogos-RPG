@@ -7,8 +7,10 @@ using Rpg.UI;
 using System.Security.Claims;
 using System.IO;
 using System.Text;
+using RPG.Mapa;
 Console.OutputEncoding = Encoding.UTF8;
 
+/*
 // chama o menu
 MenuResult resultadoMenu = MainMenu.Show();
 
@@ -56,6 +58,10 @@ Console.WriteLine("🏆 Aventura encerrada!");
 Console.ReadLine();
 */
 
+Personagem Protagonista = new Personagem("nome", nivel: 10, ataque: 30, defesa: 50);
+Protagonista.ReceberDano(100);
+Protagonista.Ouro = 3200;
+Vila vila = new Vila(Protagonista);
 
 
     
