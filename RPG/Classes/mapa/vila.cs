@@ -165,7 +165,7 @@ namespace RPG.Mapa
                 {
                     Ui.EscreverCentral("Bem-vindo ao Bar da Vila!", 0, ConsoleColor.Magenta);
                     Ui.Linha();
-                    Ui.Typewriter("Lanternas penduradas, mesas de madeira rústica e um bardo ao fundo.", Ui.VelocidadeTextoMs, ConsoleColor.Magenta);
+                    Ui.Typewriter("Lanternas penduradas, mesas de madeira rústica e um Guerreiro ao fundo.", Ui.VelocidadeTextoMs, ConsoleColor.Magenta);
                     Console.WriteLine();
                     Ui.Linha();
                     Ui.EscreverCentral("O que você deseja fazer?", 0, ConsoleColor.Magenta);
@@ -241,11 +241,21 @@ namespace RPG.Mapa
             // Abertura
             Ui.Painel(() =>
             {
-                Ui.EscreverCentral("✦ O GUERREIRO VETERANO ✦", 0, ConsoleColor.Yellow);
+                Ui.EscreverCentral("✦ O GUERREIRO VETERANO ✦", 0, ConsoleColor.Magenta);
                 Ui.Linha();
-                Ui.Typewriter("O veterano ergue os olhos de uma caneca escurecida, medindo seus passos e a poeira nas suas botas.", slow, ConsoleColor.DarkYellow);
+                Ui.Typewriter("O velho guerreiro se aproxima e começa a contar uma história épica de suas aventuras passadas.", slow, ConsoleColor.Green);
+                Ui.Typewriter("Ele fala sobre batalhas lendárias, tesouros escondidos e criaturas místicas.", slow, ConsoleColor.Green);
+                Ui.Typewriter("Você ouve atentamente, fascinado pelas histórias do velho guerreiro.", slow, ConsoleColor.Green);
+                Ui.Typewriter("Ele conta a historia de uma princesa que esta presa em um castelo muito distante com um dragão.", slow, ConsoleColor.Green);
+                Ui.Typewriter(" Ele diz que a princesa e muito bonita e que vale a pena o esforço de resgata-la.", slow, ConsoleColor.Green);
+                Ui.Typewriter("Ele diz que se voce conseguir resgata-la o rei ira te recompensar com ouro e joias.", slow, ConsoleColor.Green);
+                Ui.Typewriter("e tambem ira te dar um titulo de nobreza e voce podera casar com a princesa.", slow, ConsoleColor.Green);
+                Ui.Typewriter(" alem de um castelo e terras. um exercito para te proteger titulo de cavaleiro. ", slow, ConsoleColor.Green);
+                Ui.Typewriter(" muitos ja tentaram resgatar a princesa, mas nenhum conseguiu. O castelo e protegido por um dragao muito poderoso.", slow, ConsoleColor.Green);
+                Ui.Typewriter("Veterano eu tentei uma vez, mas ao chegar na floresta fui atacado por lobos e quase morri.", slow, ConsoleColor.Green);
+                Ui.Typewriter("Eu nunca mais tentei, mas voce parece ser um heroi muito corajoso.", slow, ConsoleColor.Green);
                 Ui.Typewriter($"Veterano: Vejo calos de espada em suas mãos... e um nome que ainda procura um final, {nome}.", slow, ConsoleColor.Yellow);
-                Ui.Typewriter($"{nome}: Caminhei muito até aqui. Ouvi dizer que o senhor conhece a estrada até o castelo da princesa.", slow, ConsoleColor.Cyan);
+                Ui.Typewriter($"{nome}: Caminhei muito até aqui. Estou interessado o senhor conhece a estrada até o castelo da princesa.", slow, ConsoleColor.Cyan);
                 Ui.Typewriter("Veterano: Conheço a estrada, os atalhos que matam e o preço de escolher o atalho errado.", slow, ConsoleColor.Yellow);
                 Ui.Typewriter($"{nome}: Então me conte. O que me aguarda?", slow, ConsoleColor.Cyan);
                 Ui.Typewriter("Veterano: Montanhas que sussurram avalanches, uma floresta orgulhosa, um mar que cobra histórias e um deserto que rouba memórias.", slow, ConsoleColor.Yellow);
