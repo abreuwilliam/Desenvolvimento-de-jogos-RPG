@@ -1,2 +1,15 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using Rpg.Classes.Abstracts;
+using Rpg.Classes.Personagens;
+using Rpg.Classes;
+
 Console.WriteLine("Hello, World!");
+Personagem Protagonista = new Personagem("Herói", nivel: 2, ataque: 150, defesa: 50);
+Personagem lobo = new Lobo();
+Combate combate = new Combate(Protagonista, lobo);
+
+    Protagonista.MostrarStatus();
+
+    combate.Iniciar();
+    Protagonista.MostrarStatus();
+
+
