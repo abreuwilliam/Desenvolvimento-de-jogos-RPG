@@ -58,10 +58,13 @@ Console.WriteLine("🏆 Aventura encerrada!");
 Console.ReadLine();
 */
 
-Personagem Protagonista = new Personagem("nome", nivel: 10, ataque: 30, defesa: 50);
+MenuResult resultadoMenu = MainMenu.Show();
+Personagem Protagonista = new Personagem(resultadoMenu.Nome, nivel: 10, ataque: 30, defesa: 50);
 Protagonista.ReceberDano(100);
 Protagonista.Ouro = 3200;
 Vila vila = new Vila(Protagonista);
+MissaoBase missao = new MissaoCavernaPerdida(Protagonista);
+missao.ExecutarMissao(Protagonista);
 
 
     
