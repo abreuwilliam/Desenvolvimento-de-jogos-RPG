@@ -66,12 +66,11 @@ public sealed class Combate
                 // loop até alguém cair
                 while (_protagonista.EstaVivo && _vilao.EstaVivo)
                 {
-                    // desenha tudo (HUD, bonecos)
+                   
                     RenderHUD(left, top);
                     DesenharBoneco(heroPos.x, heroPos.y, HeroAscii);
                     DesenharBoneco(enemyPos.x, enemyPos.y, EnemyAscii);
 
-                    // turno do herói (com animação de projétil ->)
                     AnimarAtaqueProjeteis(heroPos, enemyPos, direcaoDireita: true);
                     _protagonista.AtacarAlvo(_vilao);
                     EfeitoDano(enemyPos);
@@ -79,14 +78,12 @@ public sealed class Combate
 
                     if (!_vilao.EstaVivo) break;
 
-                    // turno do vilão (<-)
                     AnimarAtaqueProjeteis(enemyPos, heroPos, direcaoDireita: false);
                     _vilao.AtacarAlvo(_protagonista);
                     EfeitoDano(heroPos);
                     Thread.Sleep(HitPauseMs);
                 }
 
-                // ===== resultado =====
                 if (_protagonista.EstaVivo && !_vilao.EstaVivo)
                 {
                     
