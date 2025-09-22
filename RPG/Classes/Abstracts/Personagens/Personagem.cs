@@ -85,8 +85,7 @@ namespace Rpg.Classes.Abstracts
 
         private void VerificarSubidaNivel()
         {
-            // Alterado para um valor mais desafiador, como no seu método MostrarStatus
-            int expNecessaria = Nivel * 100;
+            int expNecessaria = Nivel * 10;
 
             if (Experiencia >= expNecessaria)
             {
