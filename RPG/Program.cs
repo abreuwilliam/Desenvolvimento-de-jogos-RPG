@@ -59,12 +59,13 @@ Console.ReadLine();
 */
 
 MenuResult resultadoMenu = MainMenu.Show();
-Personagem Protagonista = new Personagem(resultadoMenu.Nome, nivel: 10, ataque: 30, defesa: 50);
-Protagonista.ReceberDano(100);
+Personagem Protagonista = new Personagem(resultadoMenu.Nome, nivel: 1000, ataque: 30, defesa: 50);
 Protagonista.Ouro = 3200;
-Vila vila = new Vila(Protagonista);
-MissaoBase missao = new MissaoCavernaPerdida(Protagonista);
-missao.ExecutarMissao(Protagonista);
+
+Combate combate = new Combate(Protagonista, PersonagemFactory.Criar(TipoPersonagem.LoboSombrio));
+//combate.Iniciar();
+Floresta floresta = new Floresta(Protagonista);
+floresta.Iniciar();
 
 
     

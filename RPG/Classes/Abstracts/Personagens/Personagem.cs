@@ -106,8 +106,8 @@ namespace Rpg.Classes.Abstracts
 
             Console.WriteLine($"\n🎉 {Nome} subiu para o nível {Nivel}!");
             Console.WriteLine($"📊 Vida: {vidaAntes} → {VidaMaxima}");
-            Console.WriteLine($"⚔️ Ataque: {ataqueAntes} → {Ataque}");
-            Console.WriteLine($"🛡️ Defesa: {defesaAntes} → {Defesa}");
+             Console.WriteLine($"⚔️ Ataque: {Ataque - 2} → {Ataque}");
+            Console.WriteLine($"🛡️ Defesa: {Defesa - 1} → {Defesa}");
         }
 
         public int CalcularDano()
@@ -140,6 +140,7 @@ namespace Rpg.Classes.Abstracts
         public void AdicionarOuro(int quantidade)
         {
             Ouro += quantidade;
+            Console.WriteLine($"💰 {Nome} ganhou {quantidade} de ouro! Total: {Ouro}");
             
         }
 
@@ -174,18 +175,15 @@ namespace Rpg.Classes.Abstracts
             Console.WriteLine(new string('=', 40));
         }
 
-        public void Reviver()
-        {
-            if (!EstaVivo)
-            {
-                Vida = VidaMaxima / 2;
-                Console.WriteLine($"✨ {Nome} foi revivido com metade da vida!");
-            }
-            else
-            {
-                Console.WriteLine($"❌ {Nome} já está vivo!");
-            }
-        }
+      public void Reviver()
+{
+    if (Vida <= 0)
+    {
+        Vida = Math.Max(1, VidaMaxima / 2);
+        Console.WriteLine($"✨ {Nome} foi revivido com {Vida} de vida!");
+    }
+}
+
 
 
         public void UsarItem(Item item)

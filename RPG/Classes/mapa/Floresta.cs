@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using Rpg.Classes.Abstracts;
+using Rpg.Classes.Missoes;
 using Rpg.Classes.Personagens;
 
 namespace RPG.Mapa
@@ -9,6 +11,17 @@ namespace RPG.Mapa
         private readonly Personagem _heroi;
         private readonly Random _rand = new Random();
 
+        // pistas coletadas atualmente (persistência temporária neste objeto)
+        private readonly List<string> _pistas = new();
+        // mapeamento caminho -> pista (texto curto)
+        private readonly Dictionary<string, string> _pistasPorCaminho = new()
+        {
+            { "Árvore Gigante",    "Não sou um ser vivo, mas respiro e tenho uma boca." },
+            { "Clareira",          "Tenho um corpo, mas não tenho braços nem pernas." },
+            { "Lago Misterioso",   "Quando me alimento, cresço. Quando me negligenciam, morro." },
+            { "Caminho Iluminado", "Eu posso te dar calor e conforto, mas também posso te destruir." }
+        };
+
         public Floresta(Personagem heroi)
         {
             _heroi = heroi;
@@ -16,7 +29,7 @@ namespace RPG.Mapa
 
         public void Iniciar()
         {
-            using var _ = Som.Push("floresta.mp3");
+            using var _ = Som.Push("vila.mp3");
 
             Console.Clear();
             Ui.Painel(() =>
@@ -44,12 +57,12 @@ namespace RPG.Mapa
                     Ui.EscreverCentral("[2] Caminho da clareira enigmática", 0, ConsoleColor.Green);
                     Ui.EscreverCentral("[3] Trilha do lago misterioso", 0, ConsoleColor.Green);
                     Ui.EscreverCentral("[4] Caminho iluminado entre árvores antigas", 0, ConsoleColor.Green);
-                    Ui.EscreverCentral("[5] Caminho da caverna sombria", 0, ConsoleColor.Green);
+                    Ui.EscreverCentral("[5] Tentar resolver o enigma final", 0, ConsoleColor.Cyan);
                     Ui.EscreverCentral("[6] Voltar para a Vila", 0, ConsoleColor.Yellow);
                     Ui.EscreverCentral("[0] Sair da Floresta", 0, ConsoleColor.DarkGray);
                 }, "FLORESTA", ConsoleColor.Green);
 
-                string escolha = Ui.LerEntradaPainel("Escolha: ");
+                string escolha = Ui.LerEntradaPainel("Escolha: ").Trim();
 
                 switch (escolha)
                 {
@@ -57,7 +70,7 @@ namespace RPG.Mapa
                     case "2": IniciarCaminho("Onça Pintada", "Clareira"); break;
                     case "3": IniciarCaminho("Planta Devora-Almas", "Lago Misterioso"); break;
                     case "4": IniciarCaminho("Urso Pardo", "Caminho Iluminado"); break;
-                    case "5": IniciarCaverna(); break;
+                    case "5": TentarResolverEnigmaFinal(); break;
                     case "6":
                         Ui.Painel(() =>
                         {
@@ -128,9 +141,27 @@ namespace RPG.Mapa
             combate.Iniciar();
 
             if (_heroi.EstaVivo)
-                ExibirEnigma(caminho);
+            {
+                // adiciona pista se ainda não coletada
+                if (_pistasPorCaminho.TryGetValue(caminho, out var pista) && !_pistas.Contains(pista))
+                {
+                    _pistas.Add(pista);
+                    Ui.Painel(() =>
+                    {
+                        Ui.Typewriter("Ao explorar o local, você encontra uma pista gravada:", Ui.VelocidadeTextoMs, ConsoleColor.Cyan);
+                        Ui.Typewriter($"\"{pista}\"", Ui.VelocidadeTextoMs, ConsoleColor.Green);
+                        Ui.Typewriter($"Pistas coletadas: {_pistas.Count}/4", Ui.VelocidadeTextoMs, ConsoleColor.Yellow);
+                    }, "PISTA", ConsoleColor.Cyan);
+                }
+                else
+                {
+                    Ui.Typewriter("Você já havia vasculhado essa área — não encontra nada novo.", Ui.VelocidadeTextoMs, ConsoleColor.DarkGray);
+                }
+            }
             else
+            {
                 Ui.Typewriter("Ferido, você precisa se retirar e recuperar forças.", Ui.VelocidadeTextoMs, ConsoleColor.DarkRed);
+            }
         }
 
         private void IniciarCaverna()
@@ -175,53 +206,71 @@ namespace RPG.Mapa
                 _ => new Personagem(nome, 30, 6, 3)
             };
 
-        private void ExibirEnigma(string caminho)
+        private void TentarResolverEnigmaFinal()
         {
-            switch (caminho)
+            Ui.Painel(() =>
             {
-                case "Árvore Gigante":
-                    Ui.Painel(() =>
-                    {
-                        Ui.Typewriter("Um enigma surge na casca da árvore: 'O que nunca volta, mas sempre avança?'", Ui.VelocidadeTextoMs, ConsoleColor.DarkCyan);
-                        string resposta = Ui.LerEntradaPainel("Digite sua resposta: ").Trim().ToLower();
-                        if (resposta.Contains("tempo"))
-                            Ui.Typewriter("Você encontrou moedas antigas!", Ui.VelocidadeTextoMs, ConsoleColor.Yellow);
-                        else
-                            Ui.Typewriter("O enigma permanece indecifrável.", Ui.VelocidadeTextoMs, ConsoleColor.Red);
-                    }, "ENIGMA", ConsoleColor.DarkCyan);
-                    break;
+                Ui.Typewriter("Você se posiciona em um círculo de pedras onde os quatro caminhos parecem convergir.", Ui.VelocidadeTextoMs, ConsoleColor.Cyan);
+            }, "ENIGMA FINAL", ConsoleColor.Cyan);
 
-                case "Clareira":
-                    Ui.Painel(() =>
-                    {
-                        Ui.Typewriter("Inscrição na clareira: 'A chave do amanhã está em três letras de hoje.'", Ui.VelocidadeTextoMs, ConsoleColor.DarkCyan);
-                        string resposta = Ui.LerEntradaPainel("Digite sua resposta: ").Trim().ToLower();
-                        if (resposta == "sol")
-                            Ui.Typewriter("Você encontrou a Adaga da Lua!", Ui.VelocidadeTextoMs, ConsoleColor.Yellow);
-                        else
-                            Ui.Typewriter("O enigma permanece indecifrável.", Ui.VelocidadeTextoMs, ConsoleColor.Red);
-                    }, "ENIGMA", ConsoleColor.DarkCyan);
-                    break;
+            // verifica se já reuniu as 4 pistas
+            if (_pistas.Count < 4)
+            {
+                Ui.Painel(() =>
+                {
+                    Ui.Typewriter($"Ainda faltam pistas. Você tem {_pistas.Count}/4 pistas coletadas.", Ui.VelocidadeTextoMs, ConsoleColor.Yellow);
+                    Ui.Typewriter("Volte aos caminhos e colete todas as pistas antes de tentar resolver o enigma final.", Ui.VelocidadeTextoMs, ConsoleColor.Yellow);
+                }, "ENIGMA", ConsoleColor.DarkYellow);
+                return;
+            }
 
-                case "Lago Misterioso":
-                    Ui.Painel(() =>
-                    {
-                        Ui.Typewriter("Inscrição no lago: 'O que é leve como uma pena, mas nenhum homem pode segurar por muito tempo?'", Ui.VelocidadeTextoMs, ConsoleColor.DarkCyan);
-                        string resposta = Ui.LerEntradaPainel("Digite sua resposta: ").Trim().ToLower();
-                        if (resposta.Contains("resp"))
-                            Ui.Typewriter("Você encontrou o Elixir da Respiração!", Ui.VelocidadeTextoMs, ConsoleColor.Yellow);
-                        else
-                            Ui.Typewriter("O enigma permanece indecifrável.", Ui.VelocidadeTextoMs, ConsoleColor.Red);
-                    }, "ENIGMA", ConsoleColor.DarkCyan);
-                    break;
+            // mostra as pistas coletadas (opcional)
+            Ui.Painel(() =>
+            {
+                Ui.Typewriter("As pistas reunidas:", Ui.VelocidadeTextoMs, ConsoleColor.Green);
+                int i = 1;
+                foreach (var p in _pistas)
+                {
+                    Ui.Typewriter($"{i++}. {p}", Ui.VelocidadeTextoMs, ConsoleColor.Green);
+                }
+                Ui.Linha();
+                Ui.Typewriter("No centro encontra-se uma inscrição final:", Ui.VelocidadeTextoMs, ConsoleColor.Cyan);
+                Ui.Typewriter("'Se você me abraçar, terá calor. Que sou eu?'", Ui.VelocidadeTextoMs, ConsoleColor.Magenta);
+            }, "ENIGMA FINAL", ConsoleColor.Magenta);
 
-                case "Caminho Iluminado":
-                    Ui.Painel(() =>
-                    {
-                        Ui.Typewriter("Símbolos gravados: 'A coragem não é ausência de medo, mas a decisão de avançar.'", Ui.VelocidadeTextoMs, ConsoleColor.DarkCyan);
-                        Ui.Typewriter("Você encontra um medalhão antigo!", Ui.VelocidadeTextoMs, ConsoleColor.Yellow);
-                    }, "ENIGMA", ConsoleColor.DarkCyan);
-                    break;
+            // leitura da resposta
+            string resposta = Ui.LerEntradaPainel("Digite sua resposta: ").Trim().ToLower();
+
+            // lógica de verificação — aceite variações simples
+            bool acertou = resposta.Contains("tempo") || resposta == "tempo" ||
+                           (resposta.Contains("sol") && resposta.Contains("tre")); // exemplo: aceita "sol" e "tre" como combinação (ajuste conforme quiser)
+
+            if (acertou)
+            {
+                Ui.Painel(() =>
+                {
+                    Ui.Typewriter("As pedras se iluminam! Você decifrou o enigma.", Ui.VelocidadeTextoMs, ConsoleColor.Yellow);
+                    Ui.Typewriter("Uma passagem secreta se abre... uma nova missão se inicia.", Ui.VelocidadeTextoMs, ConsoleColor.Yellow);
+                }, "SUCESSO", ConsoleColor.Yellow);
+
+            
+                MissaoBase missao = new MissaoCavernaPerdida(_heroi); 
+                missao.ExecutarMissao(_heroi); 
+            }
+            else
+            {
+                Ui.Painel(() =>
+                {
+                    Ui.Typewriter("A inscrição permanece muda. Você não decifrou o enigma.", Ui.VelocidadeTextoMs, ConsoleColor.Red);
+                    Ui.Typewriter("Como punição, sente-se tonto e perde algumas moedas.", Ui.VelocidadeTextoMs, ConsoleColor.DarkRed);
+                }, "FALHA", ConsoleColor.Red);
+
+                // penalidade leve (opcional)
+                int perda = Math.Min(10, _heroi.Ouro);
+                if (perda > 0)
+                {
+                    _heroi.GastarOuro(perda);
+                }
             }
         }
     }
