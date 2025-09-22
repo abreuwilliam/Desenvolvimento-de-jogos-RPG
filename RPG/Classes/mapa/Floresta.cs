@@ -26,12 +26,14 @@ namespace RPG.Mapa
         {
             _heroi = heroi;
         }
+
         
 
         public void Iniciar()
         {
             
             using var _ = Som.Push("floresta.mp3");
+
 
             Console.Clear();
             Ui.Painel(() =>
@@ -76,7 +78,9 @@ namespace RPG.Mapa
                         Ui.Painel(() =>
                         {
                             Ui.Typewriter("Você retorna à Vila, com a sensação de que deixou mistérios para trás.", Ui.VelocidadeTextoMs, ConsoleColor.Yellow);
+
                             MissaoBase missao = new MissaoCavernaPerdida(_heroi);
+
                         }, "VILA", ConsoleColor.Yellow);
                         sair = true;
                         break;
@@ -140,6 +144,7 @@ namespace RPG.Mapa
             var inimigo = CriarInimigoPorNome(inimigoNome);
 
 
+
 // para o BGM atual (usa Stop que já existe)
 Som.Stop();
 
@@ -153,6 +158,7 @@ finally
     // retoma o BGM do início — ajuste o nome do arquivo se necessário
     Som.PlayLoop("floresta.mp3");
 }
+
 
 
             if (_heroi.EstaVivo)
@@ -220,8 +226,7 @@ finally
                 "Ladrão das Sombras" => new Personagem("Ladrão das Sombras", 35, 9, 4),
                 _ => new Personagem(nome, 30, 6, 3)
             };
-            
-            
+
 
         private void TentarResolverEnigmaFinal()
         {
@@ -271,8 +276,10 @@ finally
                 }, "SUCESSO", ConsoleColor.Yellow);
 
 
+
                 MissaoBase missao = new MissaoCavernaPerdida(_heroi);
                 missao.ExecutarMissao(_heroi);
+
             }
             else
             {

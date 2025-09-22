@@ -1,4 +1,6 @@
 using System;
+using System.Threading; 
+using Rpg.Classes.Itens;
 
 namespace Rpg.Classes.Abstracts
 {
@@ -8,12 +10,15 @@ namespace Rpg.Classes.Abstracts
         public string? Nome { get; set; }
         public int Nivel { get; set; }
         public int Vida { get; set; }
-        public int VidaMaxima { get;  set; }
-        public int Ataque { get;set; }
+        public int VidaMaxima { get; set; }
+        public int Ataque { get; set; }
         public int Defesa { get; set; }
-        public int Experiencia { get;set; }
+        public int Experiencia { get; set; }
         public int Ouro { get; set; }
         public bool EstaVivo => Vida > 0;
+
+      
+        public Inventario Inventario { get; private set; }
 
         public Personagem(string nome, int nivel, int ataque, int defesa)
         {
@@ -24,6 +29,9 @@ namespace Rpg.Classes.Abstracts
             Experiencia = 0;
             Ouro = 50;
             InicializarAtributos();
+
+            
+            Inventario = new Inventario();
         }
 
         private void InicializarAtributos()
@@ -49,14 +57,13 @@ namespace Rpg.Classes.Abstracts
 
         public virtual void ConcederRecompensa(Personagem agressor)
         {
-
             int expGanho = Nivel * 10;
             int ouroGanho = Nivel * 50;
 
             agressor.AdicionarExperiencia(expGanho);
             agressor.AdicionarOuro(ouroGanho);
             Console.WriteLine($"🎉 {agressor.Nome} derrotou {Nome}");
-             Console.WriteLine($"e ganhou {expGanho} de EXP e {ouroGanho} de ouro!");
+            Console.WriteLine($"e ganhou {expGanho} de EXP e {ouroGanho} de ouro!");
         }
 
         public void Curar(int quantidade)
@@ -65,13 +72,13 @@ namespace Rpg.Classes.Abstracts
             Vida = Math.Min(Vida + quantidade, VidaMaxima);
             int vidaCurada = Vida - vidaAntes;
 
-            Console.WriteLine($"❤️ {Nome} recuperou {vidaCurada} de vida!");
+            Console.WriteLine($"❤️  {Nome} recuperou {vidaCurada} de vida!");
         }
 
         public void AdicionarExperiencia(int exp)
         {
             Experiencia += exp;
-            Console.WriteLine($"⭐{Nome} ganhou {exp} de experiência!");
+            Console.WriteLine($"⭐ {Nome} ganhou {exp} de experiência!");
 
             VerificarSubidaNivel();
         }
@@ -86,18 +93,19 @@ namespace Rpg.Classes.Abstracts
             }
         }
 
-
         public void SubirNivel()
         {
             Nivel++;
             int vidaAntes = VidaMaxima;
+            int ataqueAntes = Ataque;
+            int defesaAntes = Defesa;
 
-            InicializarAtributos(); 
-            Vida = VidaMaxima; 
+            InicializarAtributos();
+            Vida = VidaMaxima; // Recupera toda a vida ao subir de nível
 
             Console.WriteLine($"\n🎉 {Nome} subiu para o nível {Nivel}!");
             Console.WriteLine($"📊 Vida: {vidaAntes} → {VidaMaxima}");
-            Console.WriteLine($"⚔️ Ataque: {Ataque - 2} → {Ataque}");
+             Console.WriteLine($"⚔️ Ataque: {Ataque - 2} → {Ataque}");
             Console.WriteLine($"🛡️ Defesa: {Defesa - 1} → {Defesa}");
         }
 
@@ -105,7 +113,7 @@ namespace Rpg.Classes.Abstracts
         {
             Random random = new Random();
             int danoBase = Ataque;
-            int bonusAleatorio = random.Next(1, 6); 
+            int bonusAleatorio = random.Next(1, 6);
             return danoBase + bonusAleatorio;
         }
 
@@ -132,6 +140,7 @@ namespace Rpg.Classes.Abstracts
         {
             Ouro += quantidade;
             Console.WriteLine($"💰 {Nome} ganhou {quantidade} de ouro! Total: {Ouro}");
+            
         }
 
         public bool GastarOuro(int quantidade)
@@ -165,18 +174,45 @@ namespace Rpg.Classes.Abstracts
             Console.WriteLine(new string('=', 40));
         }
 
-        public void Reviver()
+      public void Reviver()
+{
+    if (Vida <= 0)
+    {
+        Vida = Math.Max(1, VidaMaxima / 2);
+        Console.WriteLine($"✨ {Nome} foi revivido com {Vida} de vida!");
+    }
+}
+
+
+
+        public void UsarItem(Item item)
         {
-            if (!EstaVivo)
+            if (!Inventario.PossuiItem(item))
             {
-                Vida = VidaMaxima / 2;
+                Console.WriteLine($"❌ {Nome} não possui o item {item.Nome}!");
+                return;
             }
-            else
+
+
+            switch (item.Efeito)
             {
-                Console.WriteLine($"❌ {Nome} já está vivo!");
+                case TipoEfeito.Cura:
+                    Console.WriteLine($"🧪 {Nome} usa {item.Nome}...");
+                    Curar(item.Valor);
+                    break;
+                case TipoEfeito.AumentoAtaquePermanente:
+                    this.Ataque += item.Valor;
+                    Console.WriteLine($"💪 {Nome} usou {item.Nome} e seu ataque aumentou permanentemente em {item.Valor}!");
+                    break;
+                case TipoEfeito.AumentoDefesaPermanente:
+                    this.Defesa += item.Valor;
+                    Console.WriteLine($"🛡️ {Nome} usou {item.Nome} e sua defesa aumentou permanentemente em {item.Valor}!");
+                    break;
+                case TipoEfeito.ItemChave:
+                    Console.WriteLine($"🔑 {item.Nome}: {item.Descricao}");
+                    break;
             }
         }
-    
     }
-    
 }
+  

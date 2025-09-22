@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq; 
 using System.Threading;
-using Rpg.Classes.Abstracts;       // para AudioPlayer
+using Rpg.Classes.Abstracts;
 using Rpg.Classes.Personagens;
+using Rpg.Classes.Itens; 
 
 namespace RPG.Mapa
 {
@@ -11,6 +13,7 @@ namespace RPG.Mapa
     {
         public VilaBar Bar { get; private set; }
         public LojaDeArmas LojaDeArmas { get; private set; }
+        public LojaDeItens LojaDeItens { get; private set; } 
         public Ansiao Ansiao { get; private set; }
 
         private readonly Personagem _heroi;
@@ -39,8 +42,10 @@ namespace RPG.Mapa
                     Console.WriteLine();
                     Ui.EscreverCentral("[1] Bar", 0, ConsoleColor.Cyan);
                     Ui.EscreverCentral("[2] Loja de Armas", 0, ConsoleColor.Cyan);
-                    Ui.EscreverCentral("[3] Ancião", 0, ConsoleColor.Cyan);
-                    Ui.EscreverCentral("[4] Castelo do Rei", 0, ConsoleColor.Cyan);
+                    Ui.EscreverCentral("[3] Loja de Itens", 0, ConsoleColor.Cyan);     
+                    Ui.EscreverCentral("[4] Ancião", 0, ConsoleColor.Cyan);           
+                    Ui.EscreverCentral("[5] Castelo do Rei", 0, ConsoleColor.Cyan);   
+                    Ui.EscreverCentral("[6] Ver Inventário", 0, ConsoleColor.Cyan);   
                     Ui.EscreverCentral("[0] Sair da Vila", 0, ConsoleColor.Cyan);
                 }, "VILA", ConsoleColor.Cyan);
 
@@ -49,59 +54,119 @@ namespace RPG.Mapa
                 switch (escolha)
                 {
                     case "1":
-                    {
-                        // 🎵 Tema do Bar (empilhado — volta para o tema anterior ao sair)
-                        using var _ = Som.Push("loja.mp3");
-                        Bar = new VilaBar(_heroi);
-                        Ui.Pausa("Pressione ENTER para voltar à vila...");
-                        break;
-                    }
+                        {
+                            using var _ = Som.Push("bar.mp3"); 
+                            Bar = new VilaBar(_heroi);
+                            break;
+                        }
 
                     case "2":
-                    {
-                        // 🎵 Tema da Loja
-                        using var _ = Som.Push("bar.mp3");
-                        LojaDeArmas = new LojaDeArmas(_heroi);
-                        Ui.Pausa("Pressione ENTER para voltar à vila...");
-                        break;
-                    }
+                        {
+                            using var _ = Som.Push("loja.mp3"); 
+                            LojaDeArmas = new LojaDeArmas(_heroi);
+                            break;
+                        }
 
-                    case "3":
-                    {
-                        // 🎵 Tema do Ancião
-                        using var _ = Som.Push("castelo.mp3");
-                        Ansiao = new Ansiao(_heroi);
-                        Ui.Pausa("Pressione ENTER para voltar à vila...");
-                        break;
-                    }
+                    case "3": 
+                        {
+                            using var _ = Som.Push("loja.mp3"); 
+                            LojaDeItens = new LojaDeItens(_heroi);
+                            break;
+                        }
 
-                    case "4":
-                    {
-                        // 🎵 Tema do Castelo
-                        using var _ = Som.Push("castelo.mp3");
-                        CasteloDoRei(_heroi);
-                        Ui.Pausa("Pressione ENTER para voltar à vila...");
-                        break;
-                    }
+                    case "4": 
+                        {
+                            using var _ = Som.Push("ansiao.mp3"); 
+                            Ansiao = new Ansiao(_heroi);
+                            Ui.Pausa("Pressione ENTER para voltar à vila...");
+                            break;
+                        }
+
+                    case "5": 
+                        {
+                            using var _ = Som.Push("castelo.mp3");
+                            CasteloDoRei(_heroi);
+                            Ui.Pausa("Pressione ENTER para voltar à vila...");
+                            break;
+                        }
+
+                    case "6": 
+                        {
+                            MostrarInventario();
+                            break; 
+                        }
 
                     case "0":
-                        Ui.Painel(() =>
                         {
-                            Ui.EscreverCentral("Saindo da vila...", 0, ConsoleColor.Yellow);
-                        }, "SAIR", ConsoleColor.Yellow);
-                        sair = true;
-                        break;
+                            Ui.Painel(() =>
+                            {
+                                Ui.EscreverCentral("Saindo da vila...", 0, ConsoleColor.Yellow);
+                            }, "SAIR", ConsoleColor.Yellow);
+                            sair = true;
+                            break;
+                        }
 
                     default:
-                        Ui.Painel(() =>
                         {
-                            Ui.EscreverCentral("❌ Opção inválida. Tente novamente.", 0, ConsoleColor.Red);
-                        }, "ERRO", ConsoleColor.Red);
-                        Thread.Sleep(800);
-                        break;
+                            Ui.Painel(() =>
+                            {
+                                Ui.EscreverCentral("❌ Opção inválida. Tente novamente.", 0, ConsoleColor.Red);
+                            }, "ERRO", ConsoleColor.Red);
+                            Thread.Sleep(800);
+                            break;
+                        }
                 }
             }
             Som.Stop();
+        }
+
+        
+        private void MostrarInventario()
+        {
+            string escolha = "";
+            while (escolha != "0")
+            {
+                Console.Clear();
+                var itensNoInventario = _heroi.Inventario.ObterItens();
+
+                Ui.Painel(() =>
+                {
+                    Ui.EscreverCentral("🎒 INVENTÁRIO 🎒", 0, ConsoleColor.Yellow);
+                    Ui.Linha();
+                    if (itensNoInventario.Count == 0)
+                    {
+                        Ui.EscreverCentral("Seu inventário está vazio.", 0, ConsoleColor.Gray);
+                    }
+                    else
+                    {
+                        int i = 1;
+                        foreach (var par in itensNoInventario)
+                        {
+                            var item = par.Key;
+                            var quantidade = par.Value;
+                            Ui.EscreverCentral($"[{i}] {item.Nome} (x{quantidade}) - {item.Descricao}", 0, ConsoleColor.Yellow);
+                            i++;
+                        }
+                    }
+                    Console.WriteLine();
+                    Ui.EscreverCentral("[0] Voltar para a Vila", 0, ConsoleColor.DarkGray);
+                }, "ITENS", ConsoleColor.Yellow);
+
+                escolha = Ui.LerEntradaPainel("Digite o número do item para usar ou 0 para voltar: ");
+
+                if (int.TryParse(escolha, out int index) && index > 0 && index <= itensNoInventario.Count)
+                {
+                   
+                    Item itemSelecionado = itensNoInventario.Keys.ElementAt(index - 1);
+                    _heroi.UsarItem(itemSelecionado); 
+                    Ui.Pausa("Pressione ENTER para continuar...");
+                }
+                else if (escolha != "0")
+                {
+                    Ui.Painel(() => Ui.EscreverCentral("❌ Opção inválida.", 0, ConsoleColor.Red), "ERRO", ConsoleColor.Red);
+                    Ui.Pausa();
+                }
+            }
         }
 
         private static void CasteloDoRei(Personagem heroi)

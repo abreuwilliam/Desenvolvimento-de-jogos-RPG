@@ -101,58 +101,103 @@ PainelResultadoStatus(_protagonista, _vilao);
 PainelResultadoFim();
 
                 }
-                else if (!_protagonista.EstaVivo)
-                {
-                    int msgY1 = top + CampoAltura - 2;
-                    int msgY2 = top + CampoAltura - 1;
+     else if (!_protagonista.EstaVivo)
+{
+    int msgY1 = top + CampoAltura - 2;
+    int msgY2 = top + CampoAltura - 1;
 
-                    Console.SetCursorPosition(left + 2, msgY1);
-                    Console.Write("☠️  Você foi derrotado!                              ");
-                    Console.SetCursorPosition(left + 2, msgY2);
-                    Console.Write($"Reviver por {CustoReviver} ouro e reiniciar? (S/N): ");
+    // mostra o prompt
+    Console.SetCursorPosition(left + 2, msgY1);
+    Console.Write("☠️  Você foi derrotado!                              ");
 
-                    var key = Console.ReadKey(true).Key;
+    // loop até receber S ou N
+    while (true)
+    {
+        Console.SetCursorPosition(left + 2, msgY2);
+        Console.Write($"Reviver por {CustoReviver} ouro e reiniciar? (S/N): ");
 
-                    LimparLinha(left + 2, msgY1, CampoLargura - 4);
-                    LimparLinha(left + 2, msgY2, CampoLargura - 4);
+        // limpa teclas pendentes
+        while (Console.KeyAvailable) Console.ReadKey(true);
 
-                    if (key == ConsoleKey.S)
-                    {
-                        if (_protagonista.GastarOuro(CustoReviver))
-                        {
-                      
-                            _protagonista.Reviver();
-                            _protagonista.Curar(_protagonista.VidaMaxima);
+        var info = Console.ReadKey(true);
 
-                            if (!_vilao.EstaVivo)
-                            {
-                                _vilao.Reviver(); 
-                                int alvo = (int)Math.Floor(_vilao.VidaMaxima * 0.40);
-                                int precisa = Math.Max(0, alvo - _vilao.Vida);
-                                if (precisa > 0) _vilao.Curar(precisa);
-                            }
+        // debug: imprime a tecla lida (remova depois)
+        Console.SetCursorPosition(left + 2, msgY1 - 1);
+        Console.Write($"DEBUG: Key={info.Key}, KeyChar={(int)info.KeyChar} '{info.KeyChar}'   ");
 
-                            reiniciar = true; 
-                        }
-                        else
-                        {
-                            Console.Clear();
-                            PainelResultadoInicio("⚔️  RESULTADO DO COMBATE");
-                            EscreverLinhaPainel("❌ Ouro insuficiente para reviver.", ConsoleColor.Red);
-                            PainelResultadoStatus(_protagonista, _vilao);
-                            PainelResultadoFim();
-                        }
-                    }
-                    else
-                    {
-                       
-                        Console.Clear();
-                        PainelResultadoInicio("⚔️  RESULTADO DO COMBATE");
-                        EscreverLinhaPainel("👋 Fim do combate.", ConsoleColor.Gray);
-                        PainelResultadoStatus(_protagonista, _vilao);
-                        PainelResultadoFim();
-                    }
-                }
+        // aceita tanto ConsoleKey quanto KeyChar
+        bool aceitouS = info.Key == ConsoleKey.S || char.ToUpperInvariant(info.KeyChar) == 'S';
+        bool aceitouN = info.Key == ConsoleKey.N || char.ToUpperInvariant(info.KeyChar) == 'N';
+
+        // limpa prompt
+        LimparLinha(left + 2, msgY1, CampoLargura - 4);
+        LimparLinha(left + 2, msgY2, CampoLargura - 4);
+
+      if (aceitouS)
+{
+    // debug: mostrar ouro antes (remova se quiser)
+    Console.SetCursorPosition(left + 2, msgY1 - 1);
+    Console.Write($"DEBUG: Ouro antes = {_protagonista.Ouro}   ");
+
+    if (_protagonista.GastarOuro(CustoReviver))
+    {
+        // Revive + cura
+        _protagonista.Reviver();
+        _protagonista.Curar(_protagonista.VidaMaxima);
+
+        // Se o vilão estiver morto, restaura parte
+        if (!_vilao.EstaVivo)
+        {
+            _vilao.Reviver();
+            int alvo = (int)Math.Floor(_vilao.VidaMaxima * 0.40);
+            int precisa = Math.Max(0, alvo - _vilao.Vida);
+            if (precisa > 0) _vilao.Curar(precisa);
+        }
+
+        reiniciar = true;
+
+        // debug: mostra vida e ouro depois (remova depois)
+        Console.SetCursorPosition(left + 2, msgY1 - 1);
+        Console.Write($"DEBUG: Vida={_protagonista.Vida}/{_protagonista.VidaMaxima} Ouro={_protagonista.Ouro}   ");
+
+        // CORREÇÃO: sai do while(true) para que o do-while externo
+        // veja o valor de 'reiniciar' e efetivamente reinicie o combate.
+        break;
+    }
+    else
+    {
+        Console.Clear();
+        PainelResultadoInicio("⚔️  RESULTADO DO COMBATE");
+        EscreverLinhaPainel("❌ Ouro insuficiente para reviver.", ConsoleColor.Red);
+        PainelResultadoStatus(_protagonista, _vilao);
+        PainelResultadoFim();
+
+        // usuário não teve ouro; sair do while(true)
+        break;
+    }
+}
+        else if (aceitouN)
+        {
+            Console.Clear();
+            PainelResultadoInicio("⚔️  RESULTADO DO COMBATE");
+            EscreverLinhaPainel("👋 Fim do combate.", ConsoleColor.Gray);
+            PainelResultadoStatus(_protagonista, _vilao);
+            PainelResultadoFim();
+            break;
+        }
+        else
+        {
+            // tecla inválida — repete o prompt (opcional: mostrar aviso)
+            Console.SetCursorPosition(left + 2, msgY1);
+            Console.Write("⚠️  Responda S ou N.                                ");
+            Thread.Sleep(600);
+            LimparLinha(left + 2, msgY1, CampoLargura - 4);
+            // volta ao topo do while(true) e reimprime prompt
+        }
+    }
+}
+
+
 
             } while (reiniciar);
         }
