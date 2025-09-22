@@ -57,7 +57,7 @@ namespace RPG.Mapa
                     Ui.EscreverCentral("[2] Caminho da clareira enigmática", 0, ConsoleColor.Green);
                     Ui.EscreverCentral("[3] Trilha do lago misterioso", 0, ConsoleColor.Green);
                     Ui.EscreverCentral("[4] Caminho iluminado entre árvores antigas", 0, ConsoleColor.Green);
-                    Ui.EscreverCentral("[5] Tentar resolver o enigma final", 0, ConsoleColor.Cyan);
+                    Ui.EscreverCentral("[5] Caverna Sombria", 0, ConsoleColor.Cyan);
                     Ui.EscreverCentral("[6] Voltar para a Vila", 0, ConsoleColor.Yellow);
                     Ui.EscreverCentral("[0] Sair da Floresta", 0, ConsoleColor.DarkGray);
                 }, "FLORESTA", ConsoleColor.Green);
