@@ -26,19 +26,13 @@ namespace RPG.Mapa
         {
             _heroi = heroi;
         }
-<<<<<<< HEAD
 
-        public void Iniciar()
-        {
-            using var _ = Som.Push("vila.mp3");
-=======
         
 
         public void Iniciar()
         {
             
             using var _ = Som.Push("floresta.mp3");
->>>>>>> william
 
             Console.Clear();
             Ui.Painel(() =>
@@ -67,10 +61,8 @@ namespace RPG.Mapa
                     Ui.EscreverCentral("[3] Trilha do lago misterioso", 0, ConsoleColor.Green);
                     Ui.EscreverCentral("[4] Caminho iluminado entre árvores antigas", 0, ConsoleColor.Green);
                     Ui.EscreverCentral("[5] Caverna Sombria", 0, ConsoleColor.Cyan);
-<<<<<<< HEAD
-                    Ui.EscreverCentral("[6] Voltar para a Vila", 0, ConsoleColor.Yellow);
-=======
->>>>>>> william
+
+
                     Ui.EscreverCentral("[0] Sair da Floresta", 0, ConsoleColor.DarkGray);
                 }, "FLORESTA", ConsoleColor.Green);
 
@@ -87,10 +79,9 @@ namespace RPG.Mapa
                         Ui.Painel(() =>
                         {
                             Ui.Typewriter("Você retorna à Vila, com a sensação de que deixou mistérios para trás.", Ui.VelocidadeTextoMs, ConsoleColor.Yellow);
-<<<<<<< HEAD
-=======
+
                             MissaoBase missao = new MissaoCavernaPerdida(_heroi);
->>>>>>> william
+
                         }, "VILA", ConsoleColor.Yellow);
                         sair = true;
                         break;
@@ -153,10 +144,7 @@ namespace RPG.Mapa
 
             var inimigo = CriarInimigoPorNome(inimigoNome);
 
-<<<<<<< HEAD
-            var combate = new Combate(_heroi, inimigo);
-            combate.Iniciar();
-=======
+
 
 // para o BGM atual (usa Stop que já existe)
 Som.Stop();
@@ -172,7 +160,7 @@ finally
     Som.PlayLoop("floresta.mp3");
 }
 
->>>>>>> william
+
 
             if (_heroi.EstaVivo)
             {
@@ -239,11 +227,8 @@ finally
                 "Ladrão das Sombras" => new Personagem("Ladrão das Sombras", 35, 9, 4),
                 _ => new Personagem(nome, 30, 6, 3)
             };
-<<<<<<< HEAD
-=======
+
             
-            
->>>>>>> william
 
         private void TentarResolverEnigmaFinal()
         {
@@ -292,15 +277,11 @@ finally
                     Ui.Typewriter("Uma passagem secreta se abre... uma nova missão se inicia.", Ui.VelocidadeTextoMs, ConsoleColor.Yellow);
                 }, "SUCESSO", ConsoleColor.Yellow);
 
-<<<<<<< HEAD
-            
-                MissaoBase missao = new MissaoCavernaPerdida(_heroi); 
-                missao.ExecutarMissao(_heroi); 
-=======
+
 
                 MissaoBase missao = new MissaoCavernaPerdida(_heroi);
                 missao.ExecutarMissao(_heroi);
->>>>>>> william
+
             }
             else
             {
