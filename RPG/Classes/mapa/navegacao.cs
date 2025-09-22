@@ -28,7 +28,7 @@ namespace RPG.Mapa
         /// </summary>
         public void Executar()
         {
-            // toca a música de fundo do mundo (opcional)
+           
             Som.PlayLoop("mundo.mp3");
 
             bool sair = false;

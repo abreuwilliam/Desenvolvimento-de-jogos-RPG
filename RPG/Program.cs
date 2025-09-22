@@ -13,7 +13,7 @@ Console.OutputEncoding = Encoding.UTF8;
 
 MenuResult resultadoMenu = MainMenu.Show();
 
-Personagem Protagonista = new Personagem(resultadoMenu.Nome, nivel: 10, ataque: 30, defesa: 50);
+Personagem Protagonista = new Personagem(resultadoMenu.Nome, nivel: 5, ataque: 40, defesa: 60);
 Protagonista.Ouro = 3200;
 
 BoasVindas boasVindas = new BoasVindas(Protagonista);

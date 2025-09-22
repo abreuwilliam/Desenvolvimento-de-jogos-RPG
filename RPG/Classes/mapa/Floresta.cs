@@ -139,23 +139,29 @@ namespace RPG.Mapa
             Ui.Typewriter(descricao, Ui.VelocidadeTextoMs, ConsoleColor.Green);
 
             Ui.Pausa("Você segue adiante... pressione ENTER para continuar.");
-            Ui.Typewriter($"De repente, um {inimigoNome} surge diante de você!", Ui.VelocidadeTextoMs, ConsoleColor.Red);
+            
 
             var inimigo = CriarInimigoPorNome(inimigoNome);
 
 
 
-// para o BGM atual (usa Stop que já existe)
-Som.Stop();
+            // para o BGM atual (usa Stop que já existe)
+            Som.Stop();
+Random random = new Random();
+int numeroAleatorio = random.Next(1, 3);
 
 try
 {
+    if(numeroAleatorio == 1){
+        Ui.Typewriter($"De repente, um {inimigoNome} surge diante de você!", Ui.VelocidadeTextoMs, ConsoleColor.Red);
     var combate = new Combate(_heroi, inimigo);
-    combate.Iniciar();
+    combate.Iniciar();}
+
+    
 }
 finally
 {
-    // retoma o BGM do início — ajuste o nome do arquivo se necessário
+    
     Som.PlayLoop("floresta.mp3");
 }
 
@@ -174,10 +180,7 @@ finally
                         Ui.Typewriter($"Pistas coletadas: {_pistas.Count}/4", Ui.VelocidadeTextoMs, ConsoleColor.Yellow);
                     }, "PISTA", ConsoleColor.Cyan);
                 }
-                else
-                {
-                    Ui.Typewriter("Você já havia vasculhado essa área — não encontra nada novo.", Ui.VelocidadeTextoMs, ConsoleColor.DarkGray);
-                }
+               
             }
             else
             {
@@ -219,11 +222,11 @@ finally
         private Personagem CriarInimigoPorNome(string nome) =>
             nome switch
             {
-                "Lobo Sombrio" => new Personagem("Lobo Sombrio", 30, 8, 3),
-                "Onça Pintada" => new Personagem("Onça Pintada", 40, 10, 4),
-                "Planta Devora-Almas" => new Personagem("Planta Devora-Almas", 28, 7, 2),
-                "Urso Pardo" => new Personagem("Urso Pardo", 60, 12, 6),
-                "Ladrão das Sombras" => new Personagem("Ladrão das Sombras", 35, 9, 4),
+                "Lobo Sombrio" => new Personagem("Lobo Sombrio", 20, 18, 23),
+                "Onça Pintada" => new Personagem("Onça Pintada", 30, 30, 40),
+                "Planta Devora-Almas" => new Personagem("Planta Devora-Almas", 28, 37, 42),
+                "Urso Pardo" => new Personagem("Urso Pardo", 26, 12, 6),
+                "Ladrão das Sombras" => new Personagem("Ladrão das Sombras", 25, 39, 44),
                 _ => new Personagem(nome, 30, 6, 3)
             };
 
