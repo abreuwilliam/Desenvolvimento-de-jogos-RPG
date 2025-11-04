@@ -1,129 +1,167 @@
 using System;
-using Rpg.Classes.Abstracts;
+using System.Text;
+using System.Threading;
 using Rpg.Classes.Personagens;
+using RPG.Classes.Abstracts.Personagens;
 
-namespace RPG.Mapa
+namespace RPG.Classes.mapa
 {
-    /// <summary>
-    /// Painel de boas-vindas inicial do jogo.
-    /// Design e UX compatíveis com as outras telas (Ui, Som).
-    /// Uso: new BoasVindas(heroi).Executar();
-    /// </summary>
-    public class BoasVindas
+   
+    public class MenuPrincipal
     {
-        private readonly Personagem _heroi;
+        private Personagem heroi;
+        private AudioPlayer audioPlayer; 
 
-        public BoasVindas(Personagem heroi)
+        public MenuPrincipal(Personagem heroi)
         {
-            _heroi = heroi ?? throw new ArgumentNullException(nameof(heroi));
+      
+            this.heroi = heroi;
         }
 
-        /// <summary>
-        /// Mostra a tela de boas-vindas e o menu inicial.
-        /// Retorna quando o jogador escolher começar / sair (não bloqueia além do necessário).
-        /// </summary>
+        
         public void Executar()
         {
-            // empilha a música do menu; ao sair do using, voltará o tema anterior
-            using var _ = Som.Push("menu.mp3");
+            Console.OutputEncoding = Encoding.UTF8;
 
-            bool sair = false;
-            while (!sair)
+            audioPlayer = new AudioPlayer();
+            audioPlayer.PlayLoop("menu.mp3"); 
+
+            while (true)
             {
+                // Tela do menu principal
                 Console.Clear();
+                int largura = 80;
+                int altura = 20;
+                int left = (Console.WindowWidth - largura) / 2;
+                int top = (Console.WindowHeight - altura) / 2;
 
-                Ui.Painel(() =>
+                // Fragmentos da caixa
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.SetCursorPosition(left, top);
+                Console.Write("╔" + new string('═', largura - 2) + "╗");
+                for (int y = 1; y < altura - 1; y++)
                 {
-                    Ui.EscreverCentral("🎮 BEM-VINDO(A) AO REINO DAS LENDAS 🎮", 0, ConsoleColor.Cyan);
-                    Ui.Linha();
+                    Console.SetCursorPosition(left, top + y);
+                    Console.Write("║" + new string(' ', largura - 2) + "║");
+                }
+                Console.SetCursorPosition(left, top + altura - 1);
+                Console.Write("╚" + new string('═', largura - 2) + "╝");
 
-                    Ui.Typewriter("Aqui você vai se divertir e navegar por um mundo de aventuras.", Ui.VelocidadeTextoMs, ConsoleColor.Green);
-                    Ui.Typewriter("Explore a vila, enfrente perigos na floresta, descubra missões e encontre tesouros.", Ui.VelocidadeTextoMs, ConsoleColor.Green);
-                    Ui.Typewriter("Cada escolha abre um caminho — sua história começa agora.", Ui.VelocidadeTextoMs, ConsoleColor.Green);
+                // conteúdo do menu
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                string titulo = "BEM-VINDO(A) AO REINO DAS LENDAS";
+                Console.SetCursorPosition(left + (largura - titulo.Length) / 2, top + 2);
+                Console.WriteLine(titulo);
 
-                    Ui.Linha();
-                    Ui.EscreverCentral($"Herói: {_heroi.Nome}  •  Nível: {_heroi.Nivel}  •  Ouro: {_heroi.Ouro}", 0, ConsoleColor.Yellow);
-                    Ui.Linha();
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.SetCursorPosition(left + 2, top + 4);
+                Console.WriteLine("Aqui você vai se divertir e navegar por um mundo de aventuras.");
+                Console.SetCursorPosition(left + 2, top + 5);
+                Console.WriteLine("Explore a vila, enfrente perigos na floresta e descubra missões.");
 
-                    Ui.EscreverCentral("O que deseja fazer agora?", 0, ConsoleColor.Cyan);
-                    Ui.EscreverCentral("[1] Começar a jornada (ir ao mapa)", 0, ConsoleColor.Cyan);
-                    Ui.EscreverCentral("[2] Ver tutorial rápido", 0, ConsoleColor.Green);
-                    Ui.EscreverCentral("[3] Créditos", 0, ConsoleColor.DarkGray);
-                    Ui.EscreverCentral("[0] Sair do jogo", 0, ConsoleColor.DarkRed);
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.SetCursorPosition(left + 2, top + 8);
+                Console.WriteLine($"Herói: {heroi.Nome}  •  Nível: {heroi.Nivel}  •  Ouro: {heroi.Ouro}");
 
-                }, "BEM-VINDO", ConsoleColor.Cyan);
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.SetCursorPosition(left + 2, top + 11);
+                Console.WriteLine("[1] Começar a jornada");
+                Console.SetCursorPosition(left + 2, top + 12);
+                Console.WriteLine("[2] Ver tutorial rápido");
+                Console.SetCursorPosition(left + 2, top + 13);
+                Console.WriteLine("[3] Créditos");
+                Console.SetCursorPosition(left + 2, top + 14);
+                Console.WriteLine("[0] Sair do jogo");
 
-                string opcao = Ui.LerEntradaPainel("Escolha: ").Trim();
+                Console.SetCursorPosition(left + 2, top + 16);
+                Console.Write("Escolha: ");
+                Console.ResetColor();
+                string opcao = Console.ReadLine();
 
                 switch (opcao)
                 {
                     case "1":
-                        // começa a jornada — sai da tela de boas-vindas
-                        Ui.Painel(() =>
-                        {
-                            Ui.Typewriter("Ótimo! Prepare-se: grandes desafios aguardam. Boa sorte, herói!", Ui.VelocidadeTextoMs, ConsoleColor.Yellow);
-                        }, "PRONTOS?", ConsoleColor.Yellow);
-                        return; // retorna para quem chamou (por exemplo Navegação)
+                        Console.WriteLine("Ótimo! Prepare-se... Boa sorte!");
+                        Thread.Sleep(1500);
+                        audioPlayer.Stop(); // Para a música manualmente
+                        return; // Sai do método e continua o jogo
+
                     case "2":
-                        MostrarTutorial();
-                        break;
+                        // tela do tutorial
+                        Console.Clear();
+                        // Fragmentos caixa 2
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
+                        Console.SetCursorPosition(left, top);
+                        Console.Write("╔" + new string('═', largura - 2) + "╗");
+                        for (int y = 1; y < altura - 1; y++) { Console.SetCursorPosition(left, top + y); Console.Write("║" + new string(' ', largura - 2) + "║"); }
+                        Console.SetCursorPosition(left, top + altura - 1);
+                        Console.Write("╚" + new string('═', largura - 2) + "╝");
+
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.SetCursorPosition(left + (largura - 10) / 2, top + 2);
+                        Console.WriteLine("TUTORIAL");
+
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.SetCursorPosition(left + 2, top + 4);
+                        Console.WriteLine("• Use os números para escolher onde ir.");
+                        Console.SetCursorPosition(left + 2, top + 5);
+                        Console.WriteLine("• As batalhas são por turnos.");
+                        Console.SetCursorPosition(left + 2, top + 6);
+                        Console.WriteLine("• Fale com pessoas na vila para missões.");
+                        Console.ResetColor();
+                        Console.ReadKey();
+                        break; // Volta para o loop do menu
+
                     case "3":
-                        MostrarCreditos();
-                        break;
+                        // Tela de cresitos
+                        Console.Clear();
+                        // Fragmentos caixa 3
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
+                        Console.SetCursorPosition(left, top);
+                        Console.Write("╔" + new string('═', largura - 2) + "╗");
+                        for (int y = 1; y < altura - 1; y++) { Console.SetCursorPosition(left, top + y); Console.Write("║" + new string(' ', largura - 2) + "║"); }
+                        Console.SetCursorPosition(left, top + altura - 1);
+                        Console.Write("╚" + new string('═', largura - 2) + "╝");
+
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        Console.SetCursorPosition(left + (largura - 8) / 2, top + 2);
+                        Console.WriteLine("CRÉDITOS");
+
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.SetCursorPosition(left + 2, top + 4);
+                        Console.WriteLine("Jogo feito por: Um Desenvolvedor Iniciante");
+                        Console.SetCursorPosition(left + 2, top + 5);
+                        Console.WriteLine("Música: Da internet");
+
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.SetCursorPosition(left + 2, top + 8);
+                        Console.WriteLine("Obrigado por jogar!");
+
+                        Console.ResetColor();
+                        Console.ReadKey();
+                        break; // Volta para o loop do menu
+
                     case "0":
-                        Ui.Painel(() =>
+                        Console.WriteLine("Tem certeza que deseja sair? (s/n)");
+                        string conf = Console.ReadLine();
+                        // Validação simples e case-sensitive
+                        if (conf.ToLower() == "s")
                         {
-                            Ui.EscreverCentral("Tem certeza que deseja sair? (S/N)", 0, ConsoleColor.Yellow);
-                        }, "SAIR", ConsoleColor.Yellow);
-
-                        var conf = Ui.LerEntradaPainel("Confirmar (S/N): ").Trim();
-                        if (string.Equals(conf, "S", StringComparison.OrdinalIgnoreCase) ||
-                            string.Equals(conf, "SIM", StringComparison.OrdinalIgnoreCase))
-                        {
-                            Ui.Painel(() => Ui.EscreverCentral("Até a próxima aventura!", 0, ConsoleColor.Yellow), "TCHAU", ConsoleColor.Yellow);
-                            Environment.Exit(0);
+                            Console.WriteLine("Até a próxima!");
+                            Thread.Sleep(1000);
+                            audioPlayer.Stop();
+                            Environment.Exit(0); // Fecha o programa
                         }
-                        break;
+                        break; // Se não for "s", volta para o menu
+
                     default:
-                        Ui.Painel(() =>
-                        {
-                            Ui.EscreverCentral("❌ Opção inválida. Tente novamente.", 0, ConsoleColor.Red);
-                        }, "ERRO", ConsoleColor.Red);
-                        break;
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Opção inválida! Pressione qualquer tecla para tentar de novo.");
+                        Console.ResetColor();
+                        Console.ReadKey();
+                        break; // Volta para o loop do menu
                 }
-
-                Ui.Pausa("Pressione ENTER para voltar...");
             }
-        }
-
-        private void MostrarTutorial()
-        {
-            Ui.Painel(() =>
-            {
-                Ui.EscreverCentral("📜 TUTORIAL RÁPIDO", 0, ConsoleColor.Green);
-                Ui.Linha();
-                Ui.Typewriter("• Navegação: use os menus numerados para escolher destinos.", Ui.VelocidadeTextoMs, ConsoleColor.Green);
-                Ui.Typewriter("• Combates: avance e será automaticamente engajado em batalhas por turnos.", Ui.VelocidadeTextoMs, ConsoleColor.Green);
-                Ui.Typewriter("• Pistas & Enigmas: explore diferentes caminhos para reunir pistas antes do enigma final.", Ui.VelocidadeTextoMs, ConsoleColor.Green);
-                Ui.Typewriter("• Vila: compre equipamentos, fale com NPCs e receba missões.", Ui.VelocidadeTextoMs, ConsoleColor.Green);
-                Ui.Typewriter("• Salve sempre que puder (se o seu sistema de save suportar).", Ui.VelocidadeTextoMs, ConsoleColor.Green);
-                Ui.Linha();
-                Ui.Typewriter("Dica: ouça o que os NPCs dizem — pequenas frases são pistas importantes.", Ui.VelocidadeTextoMs, ConsoleColor.Yellow);
-            }, "TUTORIAL", ConsoleColor.Green);
-        }
-
-        private void MostrarCreditos()
-        {
-            Ui.Painel(() =>
-            {
-                Ui.EscreverCentral("🎬 CRÉDITOS", 0, ConsoleColor.Magenta);
-                Ui.Linha();
-                Ui.Typewriter("Design & Código: Sua Equipe de Desenvolvimento", Ui.VelocidadeTextoMs, ConsoleColor.Magenta);
-                Ui.Typewriter("Música & Efeitos: Biblioteca de Áudio (Assets)", Ui.VelocidadeTextoMs, ConsoleColor.Magenta);
-                Ui.Typewriter("Testes: Aventureiros destemidos e amigos beta", Ui.VelocidadeTextoMs, ConsoleColor.Magenta);
-                Ui.Linha();
-                Ui.Typewriter("Obrigado por jogar — que suas histórias sejam lendárias!", Ui.VelocidadeTextoMs, ConsoleColor.Yellow);
-            }, "CRÉDITOS", ConsoleColor.Magenta);
         }
     }
 }

@@ -5,7 +5,7 @@ using System.IO;
 using System.Text;
 
 
-namespace Rpg.UI
+namespace RPG.interacao
 {
     public enum Dificuldade { Facil, Medio, Dificil }
 
@@ -164,7 +164,7 @@ namespace Rpg.UI
             return (left, top, width, height);
         }
         private static string Limitar(string s, int max) =>
-    string.IsNullOrEmpty(s) ? "" : (s.Length <= max ? s : s[..max]);
+    string.IsNullOrEmpty(s) ? "" : s.Length <= max ? s : s[..max];
 
 
         private static void DesenharInput(int x, int y, string texto, int largura, bool foco)
@@ -184,7 +184,7 @@ namespace Rpg.UI
             {
                 var marcado = (int)atual == i;
                 var texto = $" {(marcado ? "●" : "○")} {itens[i]}  ";
-                Console.ForegroundColor = marcado ? AccentColor : (foco ? ConsoleColor.Gray : TextColor);
+                Console.ForegroundColor = marcado ? AccentColor : foco ? ConsoleColor.Gray : TextColor;
                 Escrever(x, y + i, texto);
             }
             Console.ResetColor();

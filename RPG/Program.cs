@@ -1,13 +1,13 @@
-﻿﻿using System;
+﻿using System;
 using System.Threading;
-using Rpg.Classes.Abstracts;
 using Rpg.Classes.Personagens;
 using Rpg.Classes.Missoes;
-using Rpg.UI;
 using System.Security.Claims;
 using System.IO;
 using System.Text;
 using RPG.Mapa;
+using RPG.Classes.Abstracts.Personagens;
+using RPG.interacao;
 Console.OutputEncoding = Encoding.UTF8;
 
 

@@ -2,466 +2,221 @@
 using System.IO;
 using System.Text;
 using System.Threading;
-using Rpg.Classes.Abstracts;
+using RPG.Classes.Abstracts.Personagens;
 
-namespace Rpg.Classes.Missoes
+namespace RPG.Classes.Abstracts.Missao
 {
-    public abstract class MissaoBase
+    
+    public class Missao
     {
-        // ---- dados da missão ----
-        public string Id { get; protected set; }
-        public string Titulo { get; protected set; }
-        public string Descricao { get; protected set; } = string.Empty; // ✅ garante inicialização
-        public string Local { get; protected set; }
-        public bool EstaCompleta { get; protected set; }
-        public bool EstaAtiva { get; protected set; }
-        public int ExperienciaRecompensa { get; protected set; }
-        public int OuroRecompensa { get; protected set; }
-        public Personagem Jogador { get; protected set; }
+        // Propriedades publicas para que qualqer pessoa possa editar
+        public string Id { get; set; }
+        public string Titulo { get; set; }
+        public string Descricao { get; set; }
+        public string Local { get; set; }
+        public bool EstaCompleta { get; set; }
+        public bool EstaAtiva { get; set; }
+        public int ExperienciaRecompensa { get; set; }
+        public int OuroRecompensa { get; set; }
+        public Personagem Jogador { get; set; }
 
-        // ---- áudio da missão (BGM) ----
-        private AudioPlayer? _bgm;
-        private string? _bgmPath;
-        private bool _bgmAtiva;
+        private AudioPlayer audioPlayer;
 
-        // ---- layout do painel ----
-        private static int _left, _top, _width, _height, _cursorY;
-
-        // ---- estilos/velocidades ----
-        protected int VelocidadeTextoMs { get; set; } = 25;
-        private const int LinhaAnimMs = 12;
-        private const int FadeMs = 10;
-
-        protected MissaoBase(string titulo, string local, int expRecompensa, int ouroRecompensa, Personagem jogador)
+        public Missao(string titulo, string descricao, string local, int exp, int ouro, Personagem jogador)
         {
             Id = Guid.NewGuid().ToString();
             Titulo = titulo;
+            Descricao = descricao;
             Local = local;
-            ExperienciaRecompensa = expRecompensa;
-            OuroRecompensa = ouroRecompensa;
+            ExperienciaRecompensa = exp;
+            OuroRecompensa = ouro;
+            Jogador = jogador;
             EstaCompleta = false;
             EstaAtiva = false;
-            Jogador = jogador;
         }
 
-        // ========== ciclo de execução ==========
-        public abstract void IniciarMissao(Personagem jogador);
-
-        public void ExecutarMissao(Personagem jogador)
+       
+        public void ExecutarMissao()
         {
             Console.OutputEncoding = Encoding.UTF8;
 
-            // BGM da missão
-            _bgmPath = Path.Combine(AppContext.BaseDirectory, "Assets", "missao.mp3");
-            _bgm = new AudioPlayer();
-            if (File.Exists(_bgmPath))
+            // Inicia a música, sem parar se o programa quebrar
+            audioPlayer = new AudioPlayer();
+            // Caminho do arquivo "hardcoded", em caso de possivel modificação do caminho da pasta
+            string caminhoMusica = "C:\\Users\\MeuUsuario\\Documents\\MeuJogo\\Assets\\missao.mp3";
+            if (File.Exists(caminhoMusica))
             {
-                _bgm.PlayLoop(_bgmPath);
-                _bgmAtiva = true;
+                audioPlayer.PlayLoop(caminhoMusica);
             }
 
             if (EstaCompleta)
             {
-                Painel(() =>
-                {
-                    EscreverCentral("✅ Esta missão já foi completada!", 0, ConsoleColor.Green);
-                    Linha();
-                    EscreverLinha("Pressione qualquer tecla para voltar...");
-                }, titulo: $"MISSÃO: {Titulo}");
-                Console.ReadKey(true);
+                Console.WriteLine("Você já completou esta missão!");
+                Console.ReadKey();
                 return;
             }
 
-            try
+            EstaAtiva = true;
+
+            
+            Console.Clear();
+            int largura = 70;
+            int altura = 16;
+            int left = (Console.WindowWidth - largura) / 2;
+            int top = (Console.WindowHeight - altura) / 2;
+
+            // fragmentos do Desenho da caixa
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.SetCursorPosition(left, top);
+            Console.Write("╔" + new string('═', largura - 2) + "╗");
+            for (int y = 1; y < altura - 1; y++)
             {
-                EstaAtiva = true;
-
-                // Intro
-                Painel(() =>
-                {
-                    EscreverCentral($"📍 Local: {Local}", 0, ConsoleColor.Yellow);
-                    Linha();
-                    Typewriter($"📝 {Descricao}", VelocidadeTextoMs);
-                    Linha();
-                }, titulo: $"🎯 INICIANDO MISSÃO: {Titulo}");
-
-                // História
-                Painel(() =>
-                {
-                    EscreverCentral("💬 Narrador", 0, ConsoleColor.Cyan);
-                    Linha();
-                    Typewriter(ContarHistoria(), VelocidadeTextoMs);
-                    Linha();
-                    SpinnerMensagem("Preparando objetivos", 16);
-                }, titulo: "📖 HISTÓRIA");
-
-                // Objetivos
-                TransicaoFadeOutIn();
-                ExecutarObjetivos(jogador);
-
-                // Resultado
-                if (VerificarConclusao())
-                {
-                    CompletarMissao(jogador);
-                }
-                else
-                {
-                    Painel(() =>
-                    {
-                        EscreverCentral("❌ Missão falhou! Tente novamente.", 0, ConsoleColor.Red);
-                        Linha();
-                        EscreverLinha($"👤 {Jogador.Nome} | ❤️ {Jogador.Vida}/{Jogador.VidaMaxima} | 💰 {Jogador.Ouro}");
-                    }, titulo: $"MISSÃO: {Titulo}");
-                }
+                Console.SetCursorPosition(left, top + y);
+                Console.Write("║" + new string(' ', largura - 2) + "║");
             }
-            finally
+            Console.SetCursorPosition(left, top + altura - 1);
+            Console.Write("╚" + new string('═', largura - 2) + "╝");
+
+            // Console Titulo
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            string tituloPainel = $"INICIANDO MISSÃO: {Titulo}";
+            Console.SetCursorPosition(left + (largura - tituloPainel.Length) / 2, top + 1);
+            Console.WriteLine(tituloPainel);
+
+            // Console conteúdo
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.SetCursorPosition(left + 2, top + 3);
+            Console.WriteLine($"Local: {Local}");
+
+            Console.SetCursorPosition(left + 2, top + 5);
+            // Efeito de máquina de escrever copiado aqui
+            foreach (char c in Descricao)
             {
-                if (_bgmAtiva) _bgm?.Stop();
-                _bgm?.Dispose();
-                _bgm = null;
-                _bgmAtiva = false;
-            }
-        }
-
-        // ========== para a SUBCLASSE implementar ==========
-        protected virtual string ContarHistoria()
-            => $"Você avança por {Local}. O vento traz sussurros antigos... algo observa nas sombras.";
-
-        protected abstract void ExecutarObjetivos(Personagem jogador);
-        protected abstract bool VerificarConclusao();
-
-        protected virtual void CompletarMissao(Personagem jogador)
-        {
-            EstaCompleta = true;
-            EstaAtiva = false;
-
-            string saida = CapturarSaidaConsole(() =>
-            {
-                jogador.AdicionarExperiencia(ExperienciaRecompensa);
-                jogador.AdicionarOuro(OuroRecompensa);
-                Console.WriteLine($"🎉 {jogador.Nome} concluiu {Titulo}!");
-                Console.WriteLine($"🎁 Recompensas: +{ExperienciaRecompensa} EXP • +{OuroRecompensa} Ouro");
-                DarRecompensaExtra(jogador);
-            });
-
-            // música de vitória
-            PausarBgmMissao();
-            var winPath = Path.Combine(AppContext.BaseDirectory, "Assets", "vitoria.mp3");
-            AudioPlayer? win = null;
-            try
-            {
-                if (File.Exists(winPath))
-                {
-                    win = new AudioPlayer();
-                    win.PlayLoop(winPath);
-                }
-            }
-            catch { }
-
-            Painel(() =>
-            {
-                EscreverCentral("🎉 MISSÃO CONCLUÍDA!", 0, ConsoleColor.Green);
-                Linha();
-                foreach (var linha in saida.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries))
-                    EscreverLinha(linha);
-                Linha();
-                EscreverLinha($"👤 {Jogador.Nome} | ❤️ {Jogador.Vida}/{Jogador.VidaMaxima} | 💰 {Jogador.Ouro}");
-            }, titulo: $"MISSÃO: {Titulo}");
-
-            if (win != null)
-            {
-                win.Stop();
-                win.Dispose();
-            }
-        }
-
-        protected virtual void DarRecompensaExtra(Personagem jogador) { }
-
-        // ========== controle de BGM ==========
-        protected void PausarBgmMissao()
-        {
-            if (_bgmAtiva)
-            {
-                _bgm?.Stop();
-                _bgmAtiva = false;
-            }
-        }
-
-        protected void RetomarBgmMissao()
-        {
-            if (!_bgmAtiva && _bgm != null && _bgmPath != null && File.Exists(_bgmPath))
-            {
-                _bgm.PlayLoop(_bgmPath);
-                _bgmAtiva = true;
-            }
-        }
-
-        // ========== helpers visuais ==========
-protected void Painel(Action conteudo, string titulo, int larguraMin = 70, int alturaMin = 16)
-{
-    Console.Clear();
-    DesenharCaixaCentral(larguraMin, alturaMin, ConsoleColor.DarkGray, ConsoleColor.Black);
-
-    // anima o título centralizado
-    EscreverCentralAnimado(titulo, 1, ConsoleColor.Yellow, invert: true, relativoAoConteudo: false);
-
-    // linha de divisória mais lenta e com efeito
-    LinhaAtAnimada(_top + 2, ConsoleColor.DarkGray, 20);
-
-    _cursorY = _top + 3;  // conteúdo começa logo abaixo
-    conteudo?.Invoke();
-
-    LinhaAtAnimada(_cursorY++, ConsoleColor.DarkGray, 10);
-    EscreverLinha("Pressione qualquer tecla para continuar...", ConsoleColor.Gray);
-    Console.ReadKey(true);
-}
-
-protected void PainelNoWait(Action conteudo, string titulo, int larguraMin = 70, int alturaMin = 16)
-{
-    Console.Clear();
-    DesenharCaixaCentral(larguraMin, alturaMin, ConsoleColor.DarkGray, ConsoleColor.Black);
-
-    // anima o título centralizado
-    EscreverCentralAnimado(titulo, 1, ConsoleColor.Yellow, invert: true, relativoAoConteudo: false);
-
-    // linha de divisória mais lenta
-    LinhaAtAnimada(_top + 2, ConsoleColor.DarkGray, 20);
-
-    _cursorY = _top + 3;
-    conteudo?.Invoke();
-}
-
-
-
-        protected string LerEntradaPainel(string prompt)
-        {
-            int inner = _width - 2;
-            string p = prompt.Length > inner ? prompt[..inner] : prompt;
-            Console.SetCursorPosition(_left + 1, _cursorY);
-            Console.ForegroundColor = ConsoleColor.Gray;
-            Console.Write(PadRightSafe(p, inner));
-            Console.ResetColor();
-            Console.CursorVisible = true;
-            Console.SetCursorPosition(_left + 1 + p.Length, _cursorY);
-            string? resp = Console.ReadLine();
-            Console.CursorVisible = false;
-            _cursorY++;
-            return resp ?? "";
-        }
-
-        private static void DesenharCaixaCentral(int width, int height, ConsoleColor borda, ConsoleColor fundo)
-        {
-            width = Math.Min(width, Math.Max(48, Console.WindowWidth - 4));
-            height = Math.Min(height, Math.Max(12, Console.WindowHeight - 4));
-            _width = width;
-            _height = height;
-            _left = (Console.WindowWidth - width) / 2;
-            _top = (Console.WindowHeight - height) / 2;
-
-            Console.BackgroundColor = fundo;
-            Console.ForegroundColor = borda;
-            Console.SetCursorPosition(_left, _top);
-            Console.Write("╔" + new string('═', width - 2) + "╗");
-            for (int y = 1; y < height - 1; y++)
-            {
-                Console.SetCursorPosition(_left, _top + y);
-                Console.Write("║" + new string(' ', width - 2) + "║");
-            }
-            Console.SetCursorPosition(_left, _top + height - 1);
-            Console.Write("╚" + new string('═', width - 2) + "╝");
-            Console.ResetColor();
-        }
-
-        protected static void EscreverCentral(
-            string texto,
-            int yOffset,
-            ConsoleColor? color = null,
-            bool invert = false,
-            bool relativoAoConteudo = true)
-        {
-            int yBase = relativoAoConteudo ? (_top + 2) : _top;
-            int y = yBase + yOffset;
-            int x = _left + (_width - texto.Length) / 2;
-            x = Math.Max(_left + 1, x);
-
-            if (invert) Console.BackgroundColor = ConsoleColor.Black;
-            if (color.HasValue) Console.ForegroundColor = color.Value;
-
-            Console.SetCursorPosition(x, y);
-            Console.Write(texto);
-            Console.ResetColor();
-        }
-
-        protected static void EscreverLinha(string texto, ConsoleColor? color = null)
-        {
-            int inner = _width - 2;
-            string line = texto.Length > inner ? texto[..inner] : PadRightSafe(texto, inner);
-            if (color.HasValue) Console.ForegroundColor = color.Value;
-            Console.SetCursorPosition(_left + 1, _cursorY++);
-            Console.Write(line);
-            Console.ResetColor();
-        }
-
-        protected static void Linha(ConsoleColor? color = null)
-        {
-            if (color.HasValue) Console.ForegroundColor = color.Value;
-            Console.SetCursorPosition(_left + 1, _top + 3);
-            for (int i = 0; i < _width - 2; i++)
-            {
-                Console.Write('─');
-                Thread.Sleep(LinhaAnimMs);
-            }
-            Console.ResetColor();
-        }
-
-        protected void Typewriter(string texto, int velocidadeMs)
-        {
-            int inner = _width - 2;
-            int col = 0;
-            foreach (char c in texto)
-            {
-                if (col == 0)
-                    Console.SetCursorPosition(_left + 1, _cursorY);
                 Console.Write(c);
-                Thread.Sleep(velocidadeMs);
-                col++;
-                if (col >= inner || c == '\n')
-                {
-                    _cursorY++;
-                    col = 0;
-                }
+                Thread.Sleep(25);
             }
-            _cursorY++;
-        }
 
-        protected static void SpinnerMensagem(string msg, int passos = 20)
-        {
-            var frames = new[] { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" };
-            int inner = _width - 2;
-            string baseTxt = (msg.Length > inner - 4) ? msg[..(inner - 4)] : msg;
-            for (int i = 0; i < passos; i++)
-            {
-                Console.SetCursorPosition(_left + 1, _cursorY);
-                string frame = frames[i % frames.Length];
-                Console.Write($"{frame} {baseTxt}".PadRight(inner));
-                Thread.Sleep(60);
-            }
-            _cursorY++;
-        }
-
-        protected static void BarraProgresso(string titulo, int atual, int total)
-        {
-            int inner = _width - 2;
-            int barW = Math.Max(10, inner - titulo.Length - 6);
-            double ratio = total == 0 ? 0 : Math.Clamp((double)atual / total, 0, 1);
-            int fill = (int)Math.Round(barW * ratio);
-
-            Console.SetCursorPosition(_left + 1, _cursorY++);
-            Console.Write($"{titulo} ".PadRight(inner - barW - 2));
-            Console.Write("[" + new string('■', fill) + new string(' ', barW - fill) + $"] {(int)(ratio * 100)}%");
-        }
-
-        protected static void TransicaoFadeOutIn()
-        {
-            for (int i = 0; i < 2; i++)
-            {
-                Console.ForegroundColor = ConsoleColor.DarkGray;
-                Thread.Sleep(FadeMs);
-                Console.ResetColor();
-                Thread.Sleep(FadeMs);
-            }
-        }
-
-        protected static string CapturarSaidaConsole(Action acao)
-        {
-            var original = Console.Out;
-            using var sw = new StringWriter();
-            try { Console.SetOut(sw); acao(); }
-            finally { Console.SetOut(original); }
-            return sw.ToString();
-        }
-
-        protected void DigitarTexto(string texto, int velocidadeMs = 30) => Typewriter(texto, velocidadeMs);
-
-        protected void AtualizarProgresso(string titulo, int atual, int total, int delayMs = 300)
-        {
-            BarraProgresso(titulo, atual, total);
-            Thread.Sleep(delayMs);
-        }
-
-        protected void StatusJogador()
-        {
-            EscreverLinha($"👤 {Jogador.Nome} | ❤️ {Jogador.Vida}/{Jogador.VidaMaxima} | ⚔️ {Jogador.Ataque} 🛡️ {Jogador.Defesa} | 💰 {Jogador.Ouro}");
-        }
-
-        public void MostrarStatus()
-        {
-            Painel(() =>
-            {
-                EscreverLinha($"📍 Local: {Local}");
-                EscreverLinha($"📝 {Descricao}");
-                Linha(ConsoleColor.DarkGray);
-                EscreverLinha($"✅ Status: {(EstaCompleta ? "Concluída 🎉" : EstaAtiva ? "Em Andamento ⏳" : "Disponível 📌")}");
-                EscreverLinha($"🎁 Recompensa: {ExperienciaRecompensa} EXP + {OuroRecompensa} Ouro");
-                Linha(ConsoleColor.DarkGray);
-                StatusJogador();
-            }, titulo: $"MISSÃO: {Titulo}", larguraMin: 70, alturaMin: 16);
-        }
-
-        // helper
-        private static string PadRightSafe(string s, int w) => (s ?? string.Empty).PadRight(w);
-        // título animado (digitando um por um)
-private static void EscreverCentralAnimado(
-    string texto, int yOffset,
-    ConsoleColor? color = null,
-    bool invert = false,
-    bool relativoAoConteudo = true,
-    int delayMs = 25)
-{
-    int yBase = relativoAoConteudo ? (_top + 2) : _top;
-    int y = yBase + yOffset;
-    int x = _left + (_width - texto.Length) / 2;
-    x = Math.Max(_left + 1, x);
-
-    if (invert) Console.BackgroundColor = ConsoleColor.Black;
-    if (color.HasValue) Console.ForegroundColor = color.Value;
-
-    Console.SetCursorPosition(x, y);
-    foreach (char c in texto)
-    {
-        Console.Write(c);
-        Thread.Sleep(delayMs); // efeito “typewriter”
-    }
-    Console.ResetColor();
-}
-
-// divisória lenta com estilo
-private static void LinhaAtAnimada(int y, ConsoleColor? color = null, int delayMs = 15)
-{
-    if (color.HasValue) Console.ForegroundColor = color.Value;
-    Console.SetCursorPosition(_left + 1, y);
-
-    for (int i = 0; i < _width - 2; i++)
-    {
-        Console.Write('─');
-        Thread.Sleep(delayMs); // mais lento que o normal
-    }
-    Console.ResetColor();
-}
-
-        // desenha a linha horizontal na altura indicada (y)
-        protected static void LinhaAt(int y, ConsoleColor? color = null)
-        {
-            if (color.HasValue) Console.ForegroundColor = color.Value;
-            Console.SetCursorPosition(_left + 1, y);
-            for (int i = 0; i < _width - 2; i++)
-            {
-                Console.Write('─');
-                Thread.Sleep(LinhaAnimMs);
-            }
+            Console.SetCursorPosition(left + 2, top + altura - 2);
+            Console.WriteLine("Pressione qualquer tecla para continuar...");
             Console.ResetColor();
-        }
+            Console.ReadKey(true);
 
+
+            // TELA 2 HISTÓRIA 
+            Console.Clear();
+            // Calcula altura e largura
+            largura = 70;
+            altura = 16;
+            left = (Console.WindowWidth - largura) / 2;
+            top = (Console.WindowHeight - altura) / 2;
+
+            // fragmentos do Desenho da caixa 2
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.SetCursorPosition(left, top);
+            Console.Write("╔" + new string('═', largura - 2) + "╗");
+            for (int y = 1; y < altura - 1; y++)
+            {
+                Console.SetCursorPosition(left, top + y);
+                Console.Write("║" + new string(' ', largura - 2) + "║");
+            }
+            Console.SetCursorPosition(left, top + altura - 1);
+            Console.Write("╚" + new string('═', largura - 2) + "╝");
+
+            // Escreve o título
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            tituloPainel = "HISTÓRIA";
+            Console.SetCursorPosition(left + (largura - tituloPainel.Length) / 2, top + 1);
+            Console.WriteLine(tituloPainel);
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.SetCursorPosition(left + 2, top + 3);
+            string historia = $"Você está em {Local}, um lugar perigoso...";
+            foreach (char c in historia)
+            {
+                Console.Write(c);
+                Thread.Sleep(25);
+            }
+
+            Console.SetCursorPosition(left + 2, top + altura - 2);
+            Console.WriteLine("Pressione qualquer tecla para começar os objetivos...");
+            Console.ResetColor();
+            Console.ReadKey(true);
+
+            // Objetos
+            bool sucesso = false;
+            if (Titulo == "Coletar Ervas")
+            {
+                Console.WriteLine("Você encontrou 3 ervas medicinais!");
+                Thread.Sleep(1500);
+                sucesso = true;
+            }
+            else if (Titulo == "Matar Ratos")
+            {
+                Console.WriteLine("Você luta com um rato gigante...");
+                Thread.Sleep(1000);
+                Jogador.Vida -= 5; 
+                Console.WriteLine("Você venceu, mas perdeu 5 de vida.");
+                Thread.Sleep(1500);
+                sucesso = Jogador.Vida > 0;
+            }
+            else
+            {
+                Console.WriteLine("Nenhum objetivo definido para esta missão.");
+                Thread.Sleep(1500);
+            }
+
+
+            // ---- TELA 3:
+            Console.Clear();
+            // Recalcula 
+            left = (Console.WindowWidth - largura) / 2;
+            top = (Console.WindowHeight - altura) / 2;
+
+            // fragmentos do Desenho da caixa 3
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.SetCursorPosition(left, top);
+            Console.Write("╔" + new string('═', largura - 2) + "╗");
+            for (int y = 1; y < altura - 1; y++)
+            {
+                Console.SetCursorPosition(left, top + y);
+                Console.Write("║" + new string(' ', largura - 2) + "║");
+            }
+            Console.SetCursorPosition(left, top + altura - 1);
+            Console.Write("╚" + new string('═', largura - 2) + "╝");
+
+            if (sucesso)
+            {
+                EstaCompleta = true;
+                Jogador.AdicionarExperiencia(ExperienciaRecompensa);
+                Jogador.AdicionarOuro(OuroRecompensa);
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                tituloPainel = "MISSÃO CONCLUÍDA!";
+                Console.SetCursorPosition(left + (largura - tituloPainel.Length) / 2, top + 1);
+                Console.WriteLine(tituloPainel);
+
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.SetCursorPosition(left + 2, top + 3);
+                Console.WriteLine($"Recompensa: +{ExperienciaRecompensa} EXP");
+                Console.SetCursorPosition(left + 2, top + 4);
+                Console.WriteLine($"Recompensa: +{OuroRecompensa} Ouro");
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                tituloPainel = "MISSÃO FALHOU!";
+                Console.SetCursorPosition(left + (largura - tituloPainel.Length) / 2, top + 1);
+                Console.WriteLine(tituloPainel);
+            }
+
+            Console.SetCursorPosition(left + 2, top + altura - 2);
+            Console.WriteLine("Pressione qualquer tecla para sair...");
+            Console.ResetColor();
+            Console.ReadKey(true);
+
+            // Stop musica final da repetição 
+            audioPlayer.Stop();
+            audioPlayer.Dispose();
+        }
     }
-    
 }

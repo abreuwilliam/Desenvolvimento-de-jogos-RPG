@@ -1,5 +1,5 @@
 using System;
-using Rpg.Classes.Abstracts;
+using RPG.Classes.Abstracts.Personagens;
 
 namespace Rpg.Classes.Personagens
 {

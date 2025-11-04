@@ -1,11 +1,11 @@
-﻿using Rpg.Classes.Abstracts;
-using Rpg.Classes.Itens;
+﻿using Rpg.Classes.Itens;
 using Rpg.Classes.Personagens;
+using RPG.Classes.Abstracts.Personagens;
 using System;
 using System.Collections.Generic;
-using static RPG.Mapa.Ui; 
+using static RPG.Classes.mapa.Ui;
 
-namespace RPG.Mapa
+namespace RPG.Classes.mapa
 {
     public class LojaDeItens
     {

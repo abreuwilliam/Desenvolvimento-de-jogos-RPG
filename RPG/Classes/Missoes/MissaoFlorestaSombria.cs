@@ -1,6 +1,6 @@
 ﻿using System;
-using Rpg.Classes.Abstracts;
 using Rpg.Classes.Personagens;
+using RPG.Classes.Abstracts.Personagens;
 
 namespace Rpg.Classes.Missoes
 {

@@ -1,5 +1,5 @@
 using System;
-using Rpg.Classes.Abstracts;  // Importa a classe Personagem
+using RPG.Classes.Abstracts.Personagens;  // Importa a classe Personagem
 namespace Rpg.Classes.Personagens 
 {
     public class Cavalheiro : Personagem

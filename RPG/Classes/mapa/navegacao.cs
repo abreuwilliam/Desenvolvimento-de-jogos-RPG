@@ -1,34 +1,35 @@
 using System;
-using Rpg.Classes.Abstracts;
 using Rpg.Classes.Personagens;
+using RPG.Classes.Abstracts.Personagens;
 
-namespace RPG.Mapa
+namespace RPG.Classes.mapa
 {
-    /// <summary>
+    
     /// Menu de navegação principal — integra Vila, Floresta e outros mapas.
-    /// Uso: new Navegacao(heroi).Executar();
-    /// Design e estilo alinhados com a classe Vila fornecida.
-    /// </summary>
+    
+
     public class Navegacao
     {
         private readonly Personagem _heroi;
-        private readonly Floresta _floresta;
+        private readonly MapaDaFloresta _MapaDaFloresta;
         private readonly Vila _vila;
 
         public Navegacao(Personagem heroi)
         {
             _heroi = heroi ?? throw new ArgumentNullException(nameof(heroi));
             // instâncias opcionais — elas podem manter estado próprio
-            _floresta = new Floresta(_heroi);
+            _MapaDaFloresta = new MapaDaFloresta(_heroi);
             _vila = new Vila(_heroi);
         }
 
-        /// <summary>
+        public MapaDaFloresta MapaDaFloresta => _MapaDaFloresta;
+
+
         /// Executa o loop principal de navegação.
-        /// </summary>
+
         public void Executar()
         {
-            // toca a música de fundo do mundo (opcional)
+            // toca a música de fundo do mundo 
             Som.PlayLoop("mundo.mp3");
 
             bool sair = false;
@@ -58,19 +59,19 @@ namespace RPG.Mapa
                         // abre a Vila — empilha tema e retorna ao menu quando sair
                         using (Som.Push("vila.mp3"))
                         {
-                            // instância Vila já criada no construtor; a classe Vila faz seu loop interno
-                            _vila.GetType(); // referencia para evitar aviso (não necessário se substituir por lógica)
+                            // instância Vila já criada no construtor; a classe Vila faz o seu loop interno
+                            _vila.GetType(); 
                             // recria instância ao entrar caso queira resetar estado:
                             var vila = new Vila(_heroi);
                         }
                         break;
 
                     case "2":
-                        // abre a Floresta — empilha tema e entra
+                        // abre a Floresta — empilha o tema e entra
                         using (Som.Push("floresta.mp3"))
                         {
-                            // manter instância criada no construtor ou criar nova aqui
-                            var floresta = new Floresta(_heroi);
+                           
+                            var floresta = new MapaDaFloresta(_heroi);
                             floresta.Iniciar();
                         }
                         break;

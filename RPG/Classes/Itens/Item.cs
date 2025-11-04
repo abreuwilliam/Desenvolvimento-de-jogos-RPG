@@ -1,6 +1,6 @@
 ﻿namespace Rpg.Classes.Itens
 {
-    // Enum para definir o tipo de efeito do item de forma organizada.
+    // n~descrição dos itens e efeitos
     public enum TipoEfeito
     {
         Cura,

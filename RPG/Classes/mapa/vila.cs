@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq; 
+using System.Linq;
 using System.Threading;
-using Rpg.Classes.Abstracts;
 using Rpg.Classes.Personagens;
-using Rpg.Classes.Itens; 
+using Rpg.Classes.Itens;
+using RPG.Classes.Abstracts.Personagens;
 
-namespace RPG.Mapa
+namespace RPG.Classes.mapa
 {
     public class Vila
     {

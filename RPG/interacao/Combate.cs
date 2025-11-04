@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 using System.Threading;
-using Rpg.Classes.Abstracts;
+using RPG.Classes.Abstracts.Personagens;
 
 public sealed class Combate
 {

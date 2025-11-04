@@ -1,10 +1,11 @@
-using System;
-using Rpg.Classes.Abstracts;
 using Rpg.Classes.Personagens;
+using RPG.Classes.Abstracts.Missao;
+using RPG.Classes.Abstracts.Personagens;
+using System;
 
 namespace Rpg.Classes.Missoes
 {
-    public class MissaoMarProfundo : MissaoBase
+    public class MissaoMarProfundo : Missao
     {
         private bool krakenDerrotado = false;
 
