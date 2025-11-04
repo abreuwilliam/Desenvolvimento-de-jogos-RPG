@@ -10,145 +10,112 @@ namespace Rpg.Classes.Missoes
         private bool krakenDerrotado = false;
 
         public MissaoMarProfundo(Personagem jogador)
-            : base("O Mar Profundo", "Abismo Oceânico de Thalassor", 800, 1500, jogador)
+            : base("O Mar Profundo", 
+                   "Você mergulhou no Mar Profundo. Um Kraken lendário habita essas águas sombrias.",
+                   "Abismo Oceânico de Thalassor",
+                   800, 1500, jogador)
         {
-            Descricao = "Você mergulhou no Mar Profundo. Lendas falam de um Kraken gigante que guarda tesouros submarinos.";
         }
 
-        public override void IniciarMissao(Personagem jogador)
+     
+        public void Iniciar(Personagem jogador)
         {
-            Painel(() =>
-            {
-                Typewriter("💬 Narrador: As águas são escuras e frias; o peso do oceano comprime seus pulmões...", VelocidadeTextoMs);
-                Typewriter("Sombras colossais dançam ao longe, e algo antigo desperta nas profundezas.", VelocidadeTextoMs);
-            }, $"🎯 Missão: {Titulo}");
+            Console.Clear();
+            Console.WriteLine($"=== MISSÃO INICIADA: {Titulo} ===");
+            Console.WriteLine($"{Descricao}");
+            Console.WriteLine($"Local: {Local}");
+            Console.WriteLine("-------------------------------------------");
+            Console.WriteLine("Pressione qualquer tecla para continuar...");
+            Console.ReadKey();
 
             ExecutarObjetivos(jogador);
 
-            if (VerificarConclusao())
-                CompletarMissao(jogador);
+            if (krakenDerrotado)
+                Completar(jogador);
             else
             {
-                Painel(() =>
-                {
-                    EscreverCentral("❌ Missão falhou!", 0, ConsoleColor.Red);
-                    Linha();
-                    StatusJogador();
-                }, $"MISSÃO: {Titulo}");
+                Console.WriteLine("\n❌ Missão falhou!");
+                Console.WriteLine($"Status do jogador: Vida {jogador.Vida}, Ouro {jogador.Ouro}");
             }
         }
 
-        protected override void ExecutarObjetivos(Personagem jogador)
+
+        private void ExecutarObjetivos(Personagem jogador)
         {
             bool missaoAbandonada = false;
 
             while (!krakenDerrotado && !missaoAbandonada)
             {
-                // painel de escolhas
-                PainelNoWait(() =>
-                {
-                    EscreverCentral("🕵️ O que você quer fazer?", 0, ConsoleColor.Yellow);
-                    Linha();
-                    EscreverLinha("1. Explorar o navio naufragado");
-                    EscreverLinha("2. Mergulhar até o covil do Kraken");
-                    EscreverLinha("0. Abandonar a missão");
-                }, "ESCOLHA");
+                Console.Clear();
+                Console.WriteLine("🌊 Você está nas profundezas do oceano...");
+                Console.WriteLine("O que deseja fazer?");
+                Console.WriteLine("1. Explorar o navio naufragado");
+                Console.WriteLine("2. Enfrentar o Kraken");
+                Console.WriteLine("0. Abandonar a missão");
+                Console.Write("\nEscolha: ");
 
-                string escolha = LerEntradaPainel("Digite sua escolha (1, 2 ou 0): ");
+                string escolha = Console.ReadLine();
 
-                // requisito de nível
                 if (jogador.Nivel < 15)
                 {
-                    Painel(() =>
-                    {
-                        EscreverCentral("⚠️ Você não está preparado para enfrentar o Kraken.", 0, ConsoleColor.Red);
-                        Linha();
-                        EscreverLinha("Volte quando alcançar o nível 15 ou superior!");
-                    }, "⚠️ RESTRIÇÃO");
+                    Console.WriteLine("\n⚠️ Você precisa ser nível 15 ou superior para enfrentar o Kraken!");
+                    Console.ReadKey();
                     return;
                 }
 
                 if (escolha == "1")
                 {
-                    Painel(() =>
-                    {
-                        Typewriter("Você vasculha as tábuas retorcidas de um navio antigo...", VelocidadeTextoMs);
-                        Typewriter("Encontra pérolas menores e moedas corroídas, mas nenhuma pista do Kraken.", VelocidadeTextoMs);
-                        Linha();
-                        EscreverLinha("Você retorna para a área principal do abismo.");
-                    }, "NAVIO NAUFRAGADO");
+                    Console.WriteLine("\nVocê explora o navio e encontra moedas antigas.");
+                    Console.WriteLine("Nada do Kraken ainda...");
+                    Console.ReadKey();
                 }
                 else if (escolha == "2")
                 {
-                    // encontro
+                    Console.WriteLine("\n⚔️ O Kraken emerge das profundezas!");
                     var kraken = PersonagemFactory.Criar(TipoPersonagem.PovoKraken, "Kraken do Mar Profundo");
 
-                    Painel(() =>
-                    {
-                        EscreverCentral($"⚔️ ENCONTRO COM {kraken.Nome.ToUpper()} ⚔️", 0, ConsoleColor.Red);
-                        Linha();
-                        Typewriter("Tentáculos colossais surgem do abismo, bloqueando toda rota de fuga!", VelocidadeTextoMs);
-                    }, "ENCONTRO");
-
-                    // pausa a música e limpa a tela para o combate
-                    PausarBgmMissao();
-                    Console.Clear();
-
-                    // combate
                     var combate = new Combate(jogador, kraken);
                     combate.Iniciar();
-
-                    // retoma música e limpa de volta
-                    RetomarBgmMissao();
-                    Console.Clear();
 
                     if (!kraken.EstaVivo)
                     {
                         krakenDerrotado = true;
-                        Painel(() =>
-                        {
-                            EscreverCentral($"🎉 Você derrotou o {kraken.Nome}!", 0, ConsoleColor.Green);
-                            Linha();
-                            StatusJogador();
-                        }, "VITÓRIA");
+                        Console.WriteLine("🎉 Você derrotou o Kraken!");
+                        Console.ReadKey();
                     }
                     else
                     {
-                        Painel(() =>
-                        {
-                            EscreverCentral($"💀 Você foi derrotado pelo {kraken.Nome}.", 0, ConsoleColor.Red);
-                            Linha();
-                            StatusJogador();
-                        }, "DERROTA");
+                        Console.WriteLine("💀 Você foi derrotado pelo Kraken...");
                         return;
                     }
                 }
                 else if (escolha == "0")
                 {
                     missaoAbandonada = true;
-                    Painel(() =>
-                    {
-                        EscreverCentral("👋 Você decide subir à superfície em segurança.", 0, ConsoleColor.Yellow);
-                    }, "MISSÃO ABANDONADA");
+                    Console.WriteLine("\n👋 Você retorna à superfície.");
+                    Console.ReadKey();
                 }
                 else
                 {
-                    Painel(() =>
-                    {
-                        EscreverCentral("❌ Escolha inválida! Digite 1, 2 ou 0.", 0, ConsoleColor.Red);
-                    }, "ERRO");
+                    Console.WriteLine("\n❌ Opção inválida.");
+                    Console.ReadKey();
                 }
             }
         }
 
-        protected override bool VerificarConclusao() => krakenDerrotado;
 
-        protected override void DarRecompensaExtra(Personagem jogador)
+        private void Completar(Personagem jogador)
         {
-            int aumentoDefesa = 60;
-            DigitarTexto($"\n🎁 Você saqueia o tesouro abissal e encontra a Armadura do Mar! Defesa +{aumentoDefesa}.", 30);
-            jogador.Defesa += aumentoDefesa;
+            Console.WriteLine("\n✅ Missão concluída!");
+            jogador.Ouro += 800;
+            jogador.GanharExperiencia(1500);
+
+
+            jogador.Defesa += 60;
             jogador.Nivel += 5;
+
+            Console.WriteLine("🎁 Recompensa especial: Armadura do Mar! +60 DEF");
+            Console.WriteLine("Você sobe +5 níveis!");
         }
     }
 }
