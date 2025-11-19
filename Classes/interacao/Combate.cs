@@ -19,29 +19,27 @@ public class Combate
         var audio = new AudioPlayer();
         var musicPath = Path.Combine(AppContext.BaseDirectory, "Assets", "combate.mp3");
 
-
         audio.PlayLoop(musicPath);
-         
 
-            while (_protagonista.EstaVivo && _vilao.EstaVivo)
-            {
-                _protagonista.AtacarAlvo(_vilao);
-                if (!_vilao.EstaVivo) { break; }
+        while (_protagonista.EstaVivo && _vilao.EstaVivo)
+        {
+            _protagonista.AtacarAlvo(_vilao);
+            if (!_vilao.EstaVivo) break;
 
-              
-                _vilao.AtacarAlvo(_protagonista);
-                if (!_protagonista.EstaVivo) break;
-            }
+            _vilao.AtacarAlvo(_protagonista);
+            if (!_protagonista.EstaVivo) break;
+        }
 
-            if (_protagonista.EstaVivo && !_vilao.EstaVivo)
-            {
-                Console.WriteLine($"vc venceu o combate!");
-                _vilao.ConcederRecompensa(_protagonista);
-            }
-            else
-            {
-                Console.WriteLine("vc perdeu o combate.");
-            }
+        audio.Stop();
+
+        if (_protagonista.EstaVivo && !_vilao.EstaVivo)
+        {
+            Console.WriteLine("Você venceu o combate!");
+            _vilao.ConcederRecompensa(_protagonista);
+        }
+        else
+        {
+            Console.WriteLine("Você perdeu o combate.");
         }
     }
-
+}

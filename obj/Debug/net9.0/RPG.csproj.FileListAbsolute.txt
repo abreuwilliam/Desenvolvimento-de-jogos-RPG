@@ -33,3 +33,4 @@ C:\Users\William Abreu\Desktop\RPG5\Desenvolvimento-de-jogos-RPG\RPG\obj\Debug\n
 C:\Users\William Abreu\Desktop\RPG5\Desenvolvimento-de-jogos-RPG\RPG\obj\Debug\net9.0\RPG.pdb
 C:\Users\William Abreu\Desktop\RPG5\Desenvolvimento-de-jogos-RPG\RPG\obj\Debug\net9.0\RPG.genruntimeconfig.cache
 C:\Users\William Abreu\Desktop\RPG5\Desenvolvimento-de-jogos-RPG\RPG\obj\Debug\net9.0\ref\RPG.dll
+C:\Users\William Abreu\Desktop\RPG5\Desenvolvimento-de-jogos-RPG\RPG\bin\Debug\net9.0\Assets\deserto.mp3

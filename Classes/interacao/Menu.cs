@@ -1,22 +1,30 @@
 using System;
 using System.Text;
-using System;
 using System.IO;
 
-  public class Menu
+public class Menu
+{
+    private static AudioPlayer audioPlayer;
+    private static string nome;  // ← variável nome armazenada aqui
+
+    public static void ExibirMenu()
     {
-        public static void ExibirMenu()
-        {
-            Console.Clear();
-            Console.WriteLine("=== Menu Principal ===");
-            Console.WriteLine("1. digite seu nome");
+        audioPlayer = new AudioPlayer();
+        audioPlayer.PlayLoop("menu.mp3");
 
-        }
+        Console.Clear();
+        Console.WriteLine("=== Menu Principal ===");
+        Console.Write("\nDigite seu nome: ");
+        nome = Console.ReadLine();   
 
-        public static String Nome()
-        {
-            Console.Write("Digite seu nome: ");
-            string nome = Console.ReadLine();
-            return nome;
-        }
+        Console.WriteLine("\nPressione ENTER para continuar...");
+        Console.ReadLine();
+
+        audioPlayer.Stop(); 
     }
+
+    public static string Nome()
+    {
+        return nome;   
+    }
+}

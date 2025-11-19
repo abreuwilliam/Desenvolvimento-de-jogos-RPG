@@ -72,6 +72,8 @@ using RPG.Classes.Abstracts.Personagens;
                     case "3":
                         Console.Clear();
                         Console.WriteLine("CRÉDITOS");
+                        Console.WriteLine("Desenvolvido por: William Abreu, Luis Gustavo");
+                        Console.WriteLine(" Caio Espindola , Julia Cardoso, Julia Freitas");
                         Console.WriteLine("Obrigado por jogar!");
                         Console.ResetColor();
                         Console.ReadKey();

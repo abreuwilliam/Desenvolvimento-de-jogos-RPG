@@ -28,7 +28,7 @@ namespace RPG.Mapa
             {
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("🏘️  Vila dos Ventos Serenos");
+                Console.WriteLine(" Vila dos Ventos Serenos");
                 Console.ResetColor();
 
                 Console.WriteLine();
@@ -36,9 +36,8 @@ namespace RPG.Mapa
                 Console.WriteLine();
                 Console.WriteLine("O que deseja fazer?");
                 Console.WriteLine("[1] Visitar o Bar do Boris");
-                Console.WriteLine("[2] Ir à Loja de Itens");
-                Console.WriteLine("[3] Ir à Loja de Armas");
-                Console.WriteLine("[4] Falar com o Ancião da Vila");
+                Console.WriteLine("[2] Ir à Loja de Armas");
+                Console.WriteLine("[3] Falar com o Ancião da Vila");
                 Console.WriteLine("[0] Sair da Vila");
                 Console.WriteLine();
                 Console.Write("Escolha: ");
@@ -52,15 +51,8 @@ namespace RPG.Mapa
                             EntrarNoBar();
                         }
                         break;
-
-                    case "2":
-                        using (Som.Push("loja_itens.mp3"))
-                        {
-                            var lojaItens = new LojaDeItens(_heroi.Ouro);
-                        }
-                        break;
         
-                    case "3":
+                    case "2":
                         using (Som.Push("anciao.mp3"))
                         {
                             FalarComAnciao();

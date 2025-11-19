@@ -83,7 +83,7 @@ namespace RPG.Mapa
                                 Console.WriteLine("Você ainda não tem experiência suficiente para explorar o deserto. Volte quando estiver mais forte!");
                             }
                         }
-
+                        break;      
                     case "4":
                         MostrarStatus();
                         break;
