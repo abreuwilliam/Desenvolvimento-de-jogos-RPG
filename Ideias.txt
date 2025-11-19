@@ -1,0 +1,42 @@
+vila 
+castelo do rei 
+Ansiao
+Bar
+Loja de Armas
+
+floresta 
+personagem para farma: Lobo Sombrio, Onça Pintada, Planta Devora-Almas, Urso Pardo, Ladrão das Sombras
+Missao Carvena
+
+Pantano
+Personagem para farma: Piton, Jacare Ancestral, Ogro do Pântano, Espirito do Pântano, Zumbi do Pantano, Espirito da nevoa
+Missao Espada Magica
+
+Mar Negro
+Personagem para farma: crocodilo, Megaladon, Orca, Piratas - Navio Barba Negra, Povo Kraken
+Missao Tesouro dos Piratas
+
+Deserto:
+Personagem para farma: Escorpiao de Fogo, Lobo do deserto, caçador de Tesouros
+Missao Final Castelo do Dragon
+
+Lista de Personagens
+Lobo Sombrio
+Onça Pintada
+Planta Devora-Almas
+Urso Pardo
+Ladrão das Sombras
+Piton
+Jacare Ancestral
+Ogro do Pântano
+Espirito do Pântano
+Zumbi do Pantano
+Espirito da nevoa
+Crocodilo
+Megaladon
+Orca
+Piratas - Navio Barba Negra
+Povo Kraken
+Escorpiao de Fogo
+Lobo do deserto
+Caçador de tesouros
