@@ -13,9 +13,10 @@ using RPG.Classes.mapa;
  Menu.ExibirMenu();
 
 
-Personagem Protagonista = new Personagem(Menu.Nome(), nivel: 10, ataque: 30, defesa: 50);
+Personagem Protagonista = new Personagem(Menu.Nome(), nivel: 1000, ataque: 300, defesa: 500);
 Protagonista.Ouro = 3200;
 Protagonista.Experiencia = 1200;
+
 
 BoasVindas boasVindas = new BoasVindas(Protagonista);
 boasVindas.Executar();

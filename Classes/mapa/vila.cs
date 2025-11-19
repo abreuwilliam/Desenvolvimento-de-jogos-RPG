@@ -18,6 +18,7 @@ namespace RPG.Mapa
         {
             EntrarNaVila();
         }
+
         private void EntrarNaVila()
         {
             var Som = new AudioPlayer();
@@ -35,9 +36,9 @@ namespace RPG.Mapa
                 Console.WriteLine($"Herói: {_heroi.Nome} | Ouro: {_heroi.Ouro}");
                 Console.WriteLine();
                 Console.WriteLine("O que deseja fazer?");
-                Console.WriteLine("[1] Visitar o Bar do Boris");
+                Console.WriteLine("[1] Visitar o Bar do Jhon");
                 Console.WriteLine("[2] Ir à Loja de Armas");
-                Console.WriteLine("[3] Falar com o Ancião da Vila");
+                Console.WriteLine("[3] Falar com Henry, o Velho Guerreiro");
                 Console.WriteLine("[0] Sair da Vila");
                 Console.WriteLine();
                 Console.Write("Escolha: ");
@@ -51,11 +52,20 @@ namespace RPG.Mapa
                             EntrarNoBar();
                         }
                         break;
-        
+
                     case "2":
-                        using (Som.Push("anciao.mp3"))
+                        using (Som.Push("loja.mp3"))
                         {
-                            FalarComAnciao();
+                            Console.Clear();
+                            Console.WriteLine("A Loja de Armas está em construção no momento...");
+                            Console.WriteLine("Volte mais tarde!");
+                        }
+                        break;
+
+                    case "3":
+                        using (Som.Push("henry.mp3"))
+                        {
+                            FalarComHenry();
                         }
                         break;
 
@@ -84,10 +94,10 @@ namespace RPG.Mapa
         private void EntrarNoBar()
         {
             Console.Clear();
-            Console.WriteLine("🍺 Bar do Boris");
+            Console.WriteLine("🍺 Bar do Jhon");
             Console.WriteLine("Você entra no bar e sente o cheiro forte de cerveja artesanal.");
-            Console.WriteLine("O dono, Boris, limpa um copo e sorri: 'Herói! Sempre bom ver você por aqui.'");
-            Console.WriteLine("\nBoris: 'Quer ouvir as novidades ou só relaxar um pouco?'");
+            Console.WriteLine("O dono, Jhon, limpa um copo e sorri: 'Herói! Sempre bom ver você por aqui.'");
+            Console.WriteLine("\nJhon: 'Quer ouvir as novidades ou só relaxar um pouco?'");
             Console.WriteLine("[1] Ouvir as novidades");
             Console.WriteLine("[2] Pedir uma bebida (50 ouro)");
             Console.WriteLine("[0] Sair");
@@ -97,19 +107,19 @@ namespace RPG.Mapa
             switch (escolha)
             {
                 case "1":
-                    Console.WriteLine("\nBoris: 'Dizem que criaturas estranhas andam rondando a Floresta Sombria... cuidado lá!'");
+                    Console.WriteLine("\nJhon: 'Dizem que criaturas estranhas andam rondando a Floresta Sombria... cuidado lá!'");
                     break;
 
                 case "2":
                     if (_heroi.Ouro >= 50)
                     {
                         _heroi.Ouro -= 50;
-                        Console.WriteLine("\nVocê bebe a cerveja artesanal de Boris. Sente-se revigorado!");
+                        Console.WriteLine("\nVocê bebe a cerveja artesanal de Jhon. Sente-se revigorado!");
                         _heroi.Vida = Math.Min(_heroi.Vida + 20, _heroi.VidaMaxima);
                     }
                     else
                     {
-                        Console.WriteLine("\nBoris: 'Haha! Parece que está sem trocados hoje, herói!'");
+                        Console.WriteLine("\nJhon: 'Haha! Parece que está sem moedas hoje, herói!'");
                     }
                     break;
 
@@ -119,35 +129,29 @@ namespace RPG.Mapa
             }
         }
 
-        private void FalarComAnciao()
+        private void FalarComHenry()
         {
             Console.Clear();
-            Console.WriteLine(" Ancião da Vila");
-            Console.WriteLine("Você entra na casa do ancião, repleta de livros e ervas aromáticas.");
-            Console.WriteLine("\nAncião: 'Ah... vejo que o destino o trouxe até mim, jovem herói.'");
-            Console.WriteLine("Ancião: 'A Floresta Sombria guarda mais do que simples monstros... ela guarda memórias.'");
-            Console.WriteLine("\n[1] Perguntar sobre a Floresta");
-            Console.WriteLine("[2] Pedir bênção");
-            Console.WriteLine("[0] Sair");
-            Console.Write("\nEscolha: ");
-            var escolha = Console.ReadLine()?.Trim();
+            Console.WriteLine(" Henry, o Velho Guerreiro");
+            Console.WriteLine("Você encontra Henry sentado em frente à forja antiga.");
+            Console.WriteLine("Ele afia sua espada desgastada enquanto olha para você com olhos experientes.");
+            Console.WriteLine();
 
-            switch (escolha)
-            {
-                case "1":
-                    Console.WriteLine("\nAncião: 'A Floresta já foi um santuário. Agora, tomada pelas trevas, esconde o caminho para um poder antigo.'");
-                    break;
-
-                case "2":
-                    Console.WriteLine("\nO ancião toca sua testa. Uma luz dourada o envolve...");
-                    _heroi.Vida = _heroi.VidaMaxima;
-                    Console.WriteLine("Sua vida foi completamente restaurada!");
-                    break;
-
-                default:
-                    Console.WriteLine("\nVocê se despede do ancião e sai de sua casa.");
-                    break;
-            }
+            Console.WriteLine("Henry: 'Ah... então é você o jovem herói que todos comentam.'");
+            Console.WriteLine("Henry: 'Ouça com atenção... o rei está desesperado.'");
+            Console.WriteLine();
+            Console.WriteLine("Henry: 'A princesa Alice foi sequestrada por uma força sombria que ninguém ousa enfrentar um feiroz Dragão.'");
+            Console.WriteLine("Henry: 'O rei prometeu recompensas inimagináveis a quem resgatá-la...'");
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("• Muito ouro");
+            Console.WriteLine("• Título de nobreza");
+            Console.WriteLine("• E a mão da princesa Alice, conhecida por sua rara beleza");
+            Console.ResetColor();
+            Console.WriteLine();
+            Console.WriteLine("Henry: 'Se você tiver coragem... esse pode ser o destino que mudará sua vida para sempre.'");
+            Console.WriteLine("\n[0] Sair");
+            Console.ReadLine();
         }
     }
 }

@@ -30,6 +30,7 @@ namespace Rpg.Classes.Personagens
         AranhaGigante,
         BruxaDoPantano,
 
+        Henry,
         Dragao
     }
 
@@ -63,6 +64,7 @@ namespace Rpg.Classes.Personagens
                 TipoPersonagem.AranhaGigante => new Personagem(nomePersonalizado ?? "Aranha Gigante",20,180,400),
                 TipoPersonagem.BruxaDoPantano => new Personagem(nomePersonalizado ?? "Bruxa do Pântano", 50, 500, 800),
                 TipoPersonagem.Dragao => new Personagem(nomePersonalizado ?? "Dragão", 100, 1000, 2000),
+                TipoPersonagem.Henry => new Personagem(nomePersonalizado ?? "Henry, o Velho Guerreiro", 150, 1600, 2500),
                 _ => throw new ArgumentOutOfRangeException(nameof(tipo), tipo, null)
             };
         }
