@@ -52,7 +52,7 @@ namespace RPG.Mapa
                     Console.ResetColor();
 
                     Console.WriteLine("A porta da cela atrás do dragão se abre lentamente...");
-                    Console.WriteLine("Você volta ao corredor principal do castelo em busca da princesa Alice.");
+                    Console.WriteLine("Você volta ao corredor principal do castelo em busca da princesa Aurora.");
 
                     Console.WriteLine("\nPressione uma tecla para continuar...");
                     Console.ReadKey();
@@ -77,7 +77,7 @@ namespace RPG.Mapa
         private void CenaTraicaoHenry()
         {
             Console.Clear();
-            Console.WriteLine("Ao entrar na sala do trono, você vê a princesa Alice acorrentada...");
+            Console.WriteLine("Ao entrar na sala do trono, você vê a princesa Aurora acorrentada...");
             Console.WriteLine("voce a liberta e vai com ela para a vila até o castelo do rei.");
             Console.WriteLine("Depois de dias a cavalo e muito love com a princesa, vocês chegam ao castelo.");
             Console.WriteLine("Mas, antes de chegar ao castelo faltando poucos Km, uma voz familiar ecoa pela floresta:");
@@ -109,12 +109,12 @@ namespace RPG.Mapa
                 Console.WriteLine("\nVOCÊ DERROTOU HENRY!");
                 Console.ResetColor();
 
-                Console.WriteLine("Você liberta a princesa Alice, que agradece emocionada.");
+                Console.WriteLine("Você liberta a princesa Aurora, que agradece emocionada.");
                 Console.WriteLine("O rei ficará eternamente grato por sua coragem.");
                 Console.WriteLine("\nRECOMPENSAS:");
                 Console.WriteLine("• 2000 de Ouro");
                 Console.WriteLine("• Título de Nobreza");
-                Console.WriteLine("• E a gratidão eterna da princesa Alice");
+                Console.WriteLine("• E a gratidão eterna da princesa Aurora");
 
                 heroi.Ouro += 2000;
                 heroi.Experiencia += 500;

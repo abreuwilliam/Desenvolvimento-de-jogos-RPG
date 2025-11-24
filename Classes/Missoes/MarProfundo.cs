@@ -61,7 +61,7 @@ namespace Rpg.Classes.Missoes
                 Console.WriteLine("2. Mergulhar até o covil do Kraken");
                 Console.WriteLine("0. Abandonar a missão");
                 Console.Write("\nDigite sua escolha (1, 2 ou 0): ");
-                string escolha = Console.ReadLine()?.Trim();
+                string escolha = Console.ReadLine();
 
                 if (jogador.Nivel < 15)
                 {

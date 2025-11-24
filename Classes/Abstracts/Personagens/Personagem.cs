@@ -41,9 +41,9 @@ namespace RPG.Classes.Abstracts.Personagens
 
         public void ReceberDano(int dano)
         {
-            // Garante que o dano não seja negativo se a defesa for alta
+           
             int danoReal = Math.Max(1, dano - Defesa);
-            Vida = Math.Max(0, Vida - danoReal); // Garante que a vida não fique negativa
+            Vida = Math.Max(0, Vida - danoReal); 
 
             Console.WriteLine($"{Nome} recebeu {danoReal} de dano!");
 
@@ -81,7 +81,7 @@ namespace RPG.Classes.Abstracts.Personagens
 
         private void VerificarSubidaNivel()
         {
-            int expNecessaria = Nivel * 100; // Ajustado para ser mais desafiador
+            int expNecessaria = Nivel * 100; 
             if (Experiencia >= expNecessaria)
             {
                 SubirNivel();

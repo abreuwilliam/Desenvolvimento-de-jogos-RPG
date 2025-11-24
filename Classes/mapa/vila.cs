@@ -140,13 +140,13 @@ namespace RPG.Mapa
             Console.WriteLine("Henry: 'Ah... então é você o jovem herói que todos comentam.'");
             Console.WriteLine("Henry: 'Ouça com atenção... o rei está desesperado.'");
             Console.WriteLine();
-            Console.WriteLine("Henry: 'A princesa Alice foi sequestrada por uma força sombria que ninguém ousa enfrentar um feiroz Dragão.'");
+            Console.WriteLine("Henry: 'A princesa Aurora foi sequestrada por uma força sombria que ninguém ousa enfrentar um feiroz Dragão.'");
             Console.WriteLine("Henry: 'O rei prometeu recompensas inimagináveis a quem resgatá-la...'");
             Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("• Muito ouro");
             Console.WriteLine("• Título de nobreza");
-            Console.WriteLine("• E a mão da princesa Alice, conhecida por sua rara beleza");
+            Console.WriteLine("• E a mão da princesa Aurora, conhecida por sua rara beleza");
             Console.ResetColor();
             Console.WriteLine();
             Console.WriteLine("Henry: 'Se você tiver coragem... esse pode ser o destino que mudará sua vida para sempre.'");

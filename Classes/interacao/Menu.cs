@@ -5,7 +5,7 @@ using System.IO;
 public class Menu
 {
     private static AudioPlayer audioPlayer;
-    private static string nome;  // ← variável nome armazenada aqui
+    private static string nome; 
 
     public static void ExibirMenu()
     {

@@ -9,7 +9,7 @@ namespace Rpg.Classes.Missoes
         private bool aranhaDerrotada = false;
         private AudioPlayer Som;
 
-        private AudioPlayer audioPlayer; // adicionando o player de áudio
+        private AudioPlayer audioPlayer; 
 
         public MissaoFlorestaSombria(Personagem jogador)
             : base("A Floresta Sombria", "Profundezas da Floresta de Eldor", 400, 900, jogador)
